@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
  * Represents a config file.
  * Created by Kneesnap on 9/30/2018.
  */
-@SuppressWarnings("unused")
 @Getter
+@SuppressWarnings("unused")
 public class Config {
     private Map<String, String> values = new HashMap<>();
     private Map<String, Config> children = new HashMap<>();

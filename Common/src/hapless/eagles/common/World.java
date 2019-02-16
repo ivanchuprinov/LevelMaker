@@ -13,7 +13,7 @@ public class World {
     private int xSectorSize;
     private int ySectorSize;
     private WorldPixel[][] pixels;
-    private WorldSector[][] sectors; //TODO.
+    private WorldSector[][] sectors;
 
     /**
      * Load world information from a config.
@@ -24,14 +24,24 @@ public class World {
         int ySize = config.getInt("ySize");
         int xSectors = config.getInt("xSectors");
         int ySectors = config.getInt("ySectors");
-        this.pixels = new WorldPixel[ySize][xSize];
 
         this.xSectorSize = (xSize / xSectors);
         this.ySectorSize = (ySize / ySectors);
         Utils.verify(xSize % this.xSectorSize == 0, "Cannot split %d pixels equally between %d sectors.", this.xSectorSize, this.xSectorSize);
         Utils.verify(ySize % this.ySectorSize == 0, "Cannot split %d pixels equally between %d sectors.", this.ySectorSize, this.ySectorSize);
 
-        //TODO
+        this.pixels = new WorldPixel[ySize][xSize];
+        this.sectors = new WorldSector[ySize / this.ySectorSize][xSectors / this.xSectorSize];
+
+        // Create empty pixels.
+        for (int y = 0; y < this.pixels.length; y++)
+            for (int x = 0; x < this.pixels[y].length; x++)
+                this.pixels[y][x] = new WorldPixel(this, x, y);
+
+        // Create empty sectors.
+        for (int y = 0; y < this.sectors.length; y++)
+            for (int x = 0; x < this.sectors[y].length; x++)
+                this.sectors[y][x] = new WorldSector(this, x, y);
     }
 
     /**
@@ -51,6 +61,22 @@ public class World {
     }
 
     /**
+     * Gets the X sector count.
+     * @return xSectorCount
+     */
+    public int getXSectorCount() {
+        return this.sectors[0].length;
+    }
+
+    /**
+     * Gets the Y sector count.
+     * @return ySectorCount
+     */
+    public int getYSectorCount() {
+        return this.sectors.length;
+    }
+
+    /**
      * Gets a pixel in the world.
      * @param x The x of the target pixel.
      * @param y The y of the target pixel.
@@ -61,7 +87,22 @@ public class World {
             throw new RuntimeException("X=" + x + " is outside the bounds of the world!");
 
         if (y < 0 || y >= getYSize())
-            throw new RuntimeException("X=" + x + " is outside the bounds of the world!");
+            throw new RuntimeException("Y=" + y + " is outside the bounds of the world!");
         return pixels[y][x];
+    }
+
+    /**
+     * Gets a sector based on the sector position.
+     * @param sectorX [0, xSectorCount)
+     * @param sectorY [0, ySectorCount)
+     * @return worldSector
+     */
+    public WorldSector getSector(int sectorX, int sectorY) {
+        if (sectorX < 0 || sectorY >= getXSectorCount())
+            throw new RuntimeException("X=" + sectorX + " is outside the bounds of the world!");
+
+        if (sectorY < 0 || sectorY >= getYSectorCount())
+            throw new RuntimeException("Y=" + sectorY + " is outside the bounds of the world!");
+        return sectors[sectorY][sectorX];
     }
 }
