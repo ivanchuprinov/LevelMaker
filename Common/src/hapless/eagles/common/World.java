@@ -79,7 +79,22 @@ public class World {
             throw new RuntimeException("X=" + x + " is outside the bounds of the world!");
 
         if (y < 0 || y >= getYSize())
-            throw new RuntimeException("X=" + x + " is outside the bounds of the world!");
+            throw new RuntimeException("Y=" + y + " is outside the bounds of the world!");
         return pixels[y][x];
+    }
+
+    /**
+     * Gets a sector based on the sector position.
+     * @param sectorX [0, xSectorCount)
+     * @param sectorY [0, ySectorCount)
+     * @return worldSector
+     */
+    public WorldSector getSector(int sectorX, int sectorY) {
+        if (sectorX < 0 || sectorY >= getXSectorCount())
+            throw new RuntimeException("X=" + sectorX + " is outside the bounds of the world!");
+
+        if (sectorY < 0 || sectorY >= getYSectorCount())
+            throw new RuntimeException("Y=" + sectorY + " is outside the bounds of the world!");
+        return sectors[sectorY][sectorX];
     }
 }
