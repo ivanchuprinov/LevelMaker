@@ -13,7 +13,7 @@ public class World {
     private int xSectorSize;
     private int ySectorSize;
     private WorldPixel[][] pixels;
-    private WorldSector[][] sectors; //TODO.
+    private WorldSector[][] sectors;
 
     /**
      * Load world information from a config.
@@ -24,12 +24,14 @@ public class World {
         int ySize = config.getInt("ySize");
         int xSectors = config.getInt("xSectors");
         int ySectors = config.getInt("ySectors");
-        this.pixels = new WorldPixel[ySize][xSize];
 
         this.xSectorSize = (xSize / xSectors);
         this.ySectorSize = (ySize / ySectors);
         Utils.verify(xSize % this.xSectorSize == 0, "Cannot split %d pixels equally between %d sectors.", this.xSectorSize, this.xSectorSize);
         Utils.verify(ySize % this.ySectorSize == 0, "Cannot split %d pixels equally between %d sectors.", this.ySectorSize, this.ySectorSize);
+
+        this.pixels = new WorldPixel[ySize][xSize];
+        this.sectors = new WorldSector[ySize / this.ySectorSize][xSectors / this.xSectorSize];
 
         //TODO
     }
@@ -48,6 +50,22 @@ public class World {
      */
     public int getYSize() {
         return pixels.length;
+    }
+
+    /**
+     * Gets the X sector count.
+     * @return xSectorCount
+     */
+    public int getXSectorCount() {
+        return this.sectors[0].length;
+    }
+
+    /**
+     * Gets the Y sector count.
+     * @return ySectorCount
+     */
+    public int getYSectorCount() {
+        return this.sectors.length;
     }
 
     /**
