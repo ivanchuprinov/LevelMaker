@@ -33,7 +33,15 @@ public class World {
         this.pixels = new WorldPixel[ySize][xSize];
         this.sectors = new WorldSector[ySize / this.ySectorSize][xSectors / this.xSectorSize];
 
-        //TODO
+        // Create empty pixels.
+        for (int y = 0; y < this.pixels.length; y++)
+            for (int x = 0; x < this.pixels[y].length; x++)
+                this.pixels[y][x] = new WorldPixel(this, x, y);
+
+        // Create empty sectors.
+        for (int y = 0; y < this.sectors.length; y++)
+            for (int x = 0; x < this.sectors[y].length; x++)
+                this.sectors[y][x] = new WorldSector(this, x, y);
     }
 
     /**
