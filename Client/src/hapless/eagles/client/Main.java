@@ -1,7 +1,9 @@
 package hapless.eagles.client;
 
 import hapless.eagles.common.World;
+import hapless.eagles.common.ui.GameController;
 import hapless.eagles.common.utils.Config;
+import hapless.eagles.common.utils.FXUtil;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,16 +17,17 @@ public class Main extends Application {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Client Start");
-
-        World world = new World();
-        world.load(new Config(new File("debug.cfg")));
-        System.out.println("Loaded World Config.");
-
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        World world = new World();
+        world.load(new Config(new File("debug.cfg")));
+        System.out.println("Loaded World Config.");
 
+        GameController gameController = new GameController(world, stage);
+        FXUtil.loadFXMLTemplate(stage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
+        stage.show();
     }
 }

@@ -2,6 +2,7 @@ package hapless.eagles.common;
 
 import hapless.eagles.common.utils.Config;
 import hapless.eagles.common.utils.Utils;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -14,6 +15,8 @@ public class World {
     private int ySectorSize;
     private WorldPixel[][] pixels;
     private WorldSector[][] sectors;
+
+    private static final Color[] COLORS = {Color.YELLOW, Color.GREEN, Color.HOTPINK, Color.RED, Color.BLUE, Color.GRAY};
 
     /**
      * Load world information from a config.
@@ -42,6 +45,8 @@ public class World {
         for (int y = 0; y < this.sectors.length; y++)
             for (int x = 0; x < this.sectors[y].length; x++)
                 this.sectors[y][x] = new WorldSector(this, x, y);
+
+        randomizeBoard();
     }
 
     /**
@@ -104,5 +109,14 @@ public class World {
         if (sectorY < 0 || sectorY >= getYSectorCount())
             throw new RuntimeException("Y=" + sectorY + " is outside the bounds of the world!");
         return sectors[sectorY][sectorX];
+    }
+
+    /**
+     * Randomize the colors of the board.
+     */
+    public void randomizeBoard() {
+        for (WorldPixel[] array : pixels)
+            for (WorldPixel pixel : array)
+                pixel.setColor(Utils.randElement(COLORS));
     }
 }

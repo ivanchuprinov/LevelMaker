@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Holds static utilities.
@@ -118,5 +119,27 @@ public class Utils {
      */
     public static InputStream getResourceStream(String resourceName) {
         return Utils.class.getClassLoader().getResourceAsStream(resourceName);
+    }
+
+    /**
+     * Gets a random integer between two numbers.
+     * @param min The minimum value this might return.
+     * @param max The maximum value this might return.
+     * @return randValue
+     */
+    public static int randInt(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max);
+    }
+
+    /**
+     * Gets a random element from an array.
+     * @param array The array to get values from.
+     * @return randElement
+     */
+    public static <T> T randElement(T[] array) {
+        if (array.length == 0)
+            throw new RuntimeException("Cannot get random element from empty array.");
+
+        return array[randInt(0, array.length - 1)];
     }
 }
