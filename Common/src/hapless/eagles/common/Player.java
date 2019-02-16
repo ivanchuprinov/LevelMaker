@@ -14,19 +14,19 @@ public class Player {
     private int boardID;
     private int playerNum;
     private int direction;
-    private Coordinates head;
-    private ArrayList<Coordinates> trail;
+    private WorldPixel head;
+    private ArrayList<WorldPixel> trail;
 
 
     /* Constructors */
     public Player(int x, int y, char dir) {
-        head = new Coordinates(x, y);
+        head = new WorldPixel(x, y);
         direction = dir;
         trail = new ArrayList<>();
     }
 
     /* Getters */
-    public Coordinates getHead() {
+    public WorldPixel getHead() {
         return head;
     }
 
@@ -34,7 +34,7 @@ public class Player {
         return direction;
     }
 
-    public ArrayList<Coordinates> getTrail() {
+    public ArrayList<WorldPixel> getTrail() {
         return trail;
     }
 
@@ -60,24 +60,24 @@ public class Player {
     }
 
     public void setCoordinates(int x, int y) {
-        head = new Coordinates(x, y);
+        head = new WorldPixel(x, y);
     }
 
     public void setPlayerNum(int pn) {
         playerNum = pn;
     }
 
-    public void setHead(Coordinates newHead) {
+    public void setHead(WorldPixel newHead) {
         this.head = newHead;
     }
 
     /* Add coordinates to trail */
-    public void addToTrail(Coordinates c) {
+    public void addToTrail(WorldPixel c) {
         trail.add(c);
     }
 
     /* See if coordinates are in the trail */
-    public boolean isInTrail(Coordinates c)
+    public boolean isInTrail(WorldPixel c)
     {
         boolean retVal = false;
 
@@ -131,40 +131,6 @@ public class Player {
                 break;
         }
 
-        setHead(new Coordinates(newX, newY));
-    }
-}
-
-class Coordinates
-{
-    private int x;
-    private int y;
-
-    public Coordinates(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX(){ return x; }
-    public int getY() { return y; }
-
-    public void setX(int x) { this.x = x; }
-    public void setY(int y) { this.y = y; }
-
-    public boolean isA(Coordinates c)
-    {
-        if(this.x == c.x && this.y == c.y)
-            return true;
-        else
-            return false;
-    }
-
-    public boolean isA(int x, int y)
-    {
-        if(this.x == x && this.y == y)
-            return true;
-        else
-            return false;
+        setHead(new WorldPixel(newX, newY));
     }
 }
