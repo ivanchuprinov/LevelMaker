@@ -4,7 +4,6 @@ import hapless.eagles.common.World;
 import hapless.eagles.common.WorldView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -15,13 +14,13 @@ import java.util.ResourceBundle;
  * Manages the in-game interface.
  * Created by Kneesnap on 2/16/2019.
  */
-public class GameController implements Initializable {
+public class GameUIController implements Initializable {
     private World world;
 
     @FXML private AnchorPane rootPane;
     private WorldView worldView;
 
-    public GameController(World world) {
+    public GameUIController(World world) {
         this.world = world;
     }
 
