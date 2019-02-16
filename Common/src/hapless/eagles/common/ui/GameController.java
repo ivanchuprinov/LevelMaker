@@ -20,32 +20,14 @@ public class GameController implements Initializable {
 
     @FXML private AnchorPane rootPane;
     private WorldView worldView;
-    private Stage parentStage;
 
-    public GameController(World world, Stage parentStage) {
+    public GameController(World world) {
         this.world = world;
-        this.parentStage = parentStage;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Label temp = new Label("This is a test."); //TODO: Remove
-        AnchorPane.setLeftAnchor(temp, 1D);
-        AnchorPane.setBottomAnchor(temp, 1D);
-        rootPane.getChildren().add(temp);
-
         this.worldView = new WorldView(world);
-
-        parentStage.widthProperty().addListener(((observableValue, oldValue, newValue) -> {
-            this.worldView.setWidth(newValue.doubleValue());
-            this.worldView.renderWorld();
-        }));
-
-        parentStage.heightProperty().addListener(((observableValue, oldValue, newValue) -> {
-            this.worldView.setHeight(newValue.doubleValue());
-            this.worldView.renderWorld();
-        }));
-
         rootPane.getChildren().add(this.worldView);
         this.worldView.renderWorld();
 
@@ -53,5 +35,21 @@ public class GameController implements Initializable {
             world.randomizeBoard();
             this.worldView.renderWorld();
         });
+    }
+
+    /**
+     * Called after the stage is setup.
+     * @param stage The stage setup.
+     */
+    public void postSetup(Stage stage) {
+        stage.getScene().widthProperty().addListener(((observableValue, oldValue, newValue) -> {
+            this.worldView.setWidth(newValue.doubleValue());
+            this.worldView.renderWorld();
+        }));
+
+        stage.getScene().heightProperty().addListener(((observableValue, oldValue, newValue) -> {
+            this.worldView.setHeight(newValue.doubleValue());
+            this.worldView.renderWorld();
+        }));
     }
 }

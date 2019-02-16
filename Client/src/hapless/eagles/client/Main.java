@@ -26,8 +26,9 @@ public class Main extends Application {
         world.load(new Config(new File("debug.cfg")));
         System.out.println("Loaded World Config.");
 
-        GameController gameController = new GameController(world, stage);
+        GameController gameController = new GameController(world);
         FXUtil.loadFXMLTemplate(stage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
+        gameController.postSetup(stage);
         stage.show();
     }
 }
