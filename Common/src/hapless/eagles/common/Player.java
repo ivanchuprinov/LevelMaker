@@ -143,12 +143,14 @@ public class Player {
 
     public void setDead(){
         alive = false;
-    }//    /* Add coordinates to trail */
+    }
+
+    /* Add coordinates to trail */
 //    public void addToTrail(WorldPixel c) {
 //        trail.add(c);
 //    }
 //
-    //    /* See if coordinates are in the trail */
+//    /* See if coordinates are in the trail */
 //    public boolean isInTrail(WorldPixel c)
 //    {
 //        boolean retVal = false;

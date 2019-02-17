@@ -1,6 +1,7 @@
 package hapless.eagles.common.utils;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -51,10 +52,10 @@ public class FXUtil {
      * @param controller Makes the window controller.
      * @return rootNode
      */
-    public static <T> Parent loadFXMLTemplate(Stage stage, String template, T controller) {
+    public static <T, N extends Parent> N loadFXMLTemplate(Stage stage, String template, T controller) {
         FXMLLoader loader = getFXMLLoader(template);
 
-        Parent rootNode;
+        N rootNode;
         try {
             if (controller != null)
                 loader.setController(controller);

@@ -3,6 +3,8 @@ package hapless.eagles.common;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Represents a section of the world.
@@ -12,7 +14,8 @@ import java.util.ArrayList;
 public class WorldSector {
     private int x;
     private int y;
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<>();
+    private Queue<Player> playerQueue = new LinkedList<>();
 
     @Getter private static World world; // TODO: This shouldn't be static.
 
@@ -34,7 +37,10 @@ public class WorldSector {
      * Add a player to the list.
      */
     public void addPlayer(Player p) {
-        players.add(p);
+        if(players.size() > 1)
+            playerQueue.add(p);
+        else
+            players.add(p);
     }
 
     /**
@@ -43,6 +49,29 @@ public class WorldSector {
     public void removePlayer(Player p) {
         if (!players.remove(p))
             throw new RuntimeException("Didn't find player to be removed.");
+    }
+
+    /**
+     * Removes all players from the list.
+     */
+    public void removeAllPlayers()
+    {
+        while(players.size() != 0)
+        {
+            players.remove(0);
+        }
+    }
+
+    /**
+     * Loads the next batch of players from the queue.
+     */
+    public void loadQueuedPlayers()
+    {
+        for(int i = 0; i<4; i++)
+        {
+            if(!playerQueue.isEmpty())
+                players.add(playerQueue.remove());
+        }
     }
 
     /**
