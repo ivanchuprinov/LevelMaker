@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class WorldSector {
     private int x;
     private int y;
-    private static World world;
     private ArrayList<Player> players;
-    private int playerCount = 0;
+
+    @Getter private static World world; // TODO: This shouldn't be static.
 
     public WorldSector(World parentWorld, int x, int y) {
         world = parentWorld;
@@ -23,21 +23,26 @@ public class WorldSector {
     }
 
     /**
+     * Get the amount of players in this sector.
+     * @return playerCount
+     */
+    public int getPlayerCount() {
+        return players.size();
+    }
+
+    /**
      * Add a player to the list.
      */
-    public void addPlayer(Player p){
+    public void addPlayer(Player p) {
         players.add(p);
-        ++playerCount;
     }
 
     /**
      * Remove a player from the list.
      */
     public void removePlayer(Player p) {
-        if(players.remove(p))
-            --playerCount;
-        else
-            System.out.println("Didn't find player to be removed. Fuck me I guess");
+        if (!players.remove(p))
+            throw new RuntimeException("Didn't find player to be removed.");
     }
 
     /**
@@ -64,9 +69,5 @@ public class WorldSector {
      */
     public int getWorldYStart() {
         return (world.getYSectorSize() * getY());
-    }
-
-    public static World getWorld() {
-        return world;
     }
 }

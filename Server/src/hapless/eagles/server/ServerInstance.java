@@ -2,6 +2,7 @@ package hapless.eagles.server;
 
 import hapless.eagles.common.World;
 import hapless.eagles.common.WorldSector;
+import hapless.eagles.common.packets.serverbound.IServerPacketHandler;
 import hapless.eagles.common.utils.Config;
 import hapless.eagles.server.network.ServerInitHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -11,16 +12,21 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Represents a game server instance.
  * Created by Kneesnap on 2/16/2019.
  */
+@Getter
 public class ServerInstance {
-    private Map<WorldSector, ChannelGroup> channelGroups;
+    private Map<WorldSector, ChannelGroup> channelGroups = new HashMap<>();
+    private IServerPacketHandler packetHandler; //TODO: Create.
     private World world;
+    private String name;
     private int port;
 
     public ServerInstance(Config config) {
@@ -32,7 +38,12 @@ public class ServerInstance {
      * @param config config
      */
     public void load(Config config) {
+        this.name = config.getString("name");
         this.port = config.getInt("port");
+
+        // Load the world from the same config.
+        this.world = new World();
+        this.world.load(config);
     }
 
     /**
@@ -46,14 +57,14 @@ public class ServerInstance {
                 .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .childHandler(new ServerInitHandler());
+                .childHandler(new ServerInitHandler(this));
 
         bootstrap.bind(this.port).channel().closeFuture().addListener(evt -> {
             group.shutdownGracefully();
-            System.out.println("Server on port " + this.port + " shutting down.");
+            System.out.println(getName() + " is shutting down.");
         });
 
-        System.out.println("Started server instance on port " + this.port + ".");
+        System.out.println(getName() + " started on port " + getPort() + ".");
     }
 
 }

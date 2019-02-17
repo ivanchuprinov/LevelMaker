@@ -3,10 +3,12 @@ package hapless.eagles.server;
 import hapless.eagles.common.Player;
 import hapless.eagles.common.World;
 import hapless.eagles.common.WorldSector;
+import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//TODO: Once this is all done, we can clean it up.
 public class Controller {
 	private HashMap<Integer, Player> players = new HashMap<Integer, Player>();
 	private ArrayList<WorldSector> sectors = new ArrayList<WorldSector>();
@@ -35,6 +37,7 @@ public class Controller {
 
 	}
 
+	@SneakyThrows
 	public void newPlayer(int sectorID) {
 		++playerID;
 		WorldSector sector = sectors.get(sectorID);
@@ -47,7 +50,7 @@ public class Controller {
 		else
 		{
 			System.out.println("You've been added to the queue");
-			System.wait(Forever);
+			Thread.sleep(Long.MAX_VALUE);
 		}
 	}
 
