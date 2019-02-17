@@ -203,7 +203,7 @@ public class Player {
         }
 
         if(canvas.getGraphicsContext2D().isPointInPath(newX, newY)) {
-
+            alive = false;
         }
         else {
             trail.add(new LineTo(newX, newY));

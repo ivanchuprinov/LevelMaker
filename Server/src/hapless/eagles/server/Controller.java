@@ -48,36 +48,31 @@ public class Controller {
 	}
 
 	/* The game is supposed to be started each time there are enough players */
-	public void startGame()
+	public void startGame(WorldSector s)
 	{
 
-		while(gamesUnfinished())
-		{
-			for (int sID = 0; sID < sectors.size(); sID++)
+		while(s.gameReady) {
+			if (s.getPlayerCount() > 1)
 			{
-				WorldSector s = sectors.get(sID);
-				if (s.getPlayerCount() > 1)
+				for (int pIndex = 0; pIndex < s.getPlayers().size(); pIndex++)
 				{
-					for (int pIndex = 0; pIndex < s.getPlayers().size(); pIndex++)
-					{
-						Player p = s.getPlayers().get(pIndex);
-						p.move();
+					Player p = s.getPlayers().get(pIndex);
+					p.move();
 
-						if(!p.isAlive())
+					if(!p.isAlive())
+					{
+						killPlayer(p.getPlayerID());
+						int newSize = s.getPlayerCount();
+						if (0 < newSize && newSize < 2)
 						{
-							killPlayer(p.getPlayerID());
-							int newSize = s.getPlayerCount();
-							if (0 < newSize && newSize < 2)
-							{
-								Player winner = s.getPlayers().get(0);
-								paintPixel(winner.getPlayerID(), winner.getSectorID());
-							}
+							Player winner = s.getPlayers().get(0);
+							paintPixel(winner.getPlayerID(), winner.getSectorID());
 						}
 					}
 				}
 			}
 		}
-		endGame();
+		endGame(s);
 	}
 
 	public void paintPixel(int pID, int sID)
@@ -87,53 +82,21 @@ public class Controller {
 		players.get(pID);
 	}
 
-	private boolean gamesUnfinished()
-	{
-		for (int sID = 0; sID < sectors.size(); sID++)
-		{
-			WorldSector s = sectors.get(sID);
-			if (s.getPlayerCount() > 1)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 
-	private boolean gamesReady()
-	{
-		for (int sID = 0; sID < sectors.size(); sID++)
-		{
-			WorldSector s = sectors.get(sID);
-			if (s.getPlayerCount() == 4)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-
-	private void endGame()
-	{
-		for(int sID = 0; sID<sectors.size(); sID++)
-		{
-			WorldSector s = sectors.get(sID);
-			s.removeAllPlayers();
-			s.loadQueuedPlayers();
-		}
-		if(gamesReady())
-			startGame();
+	private void endGame(WorldSector s) {
+		s.removeAllPlayers();
+		s.loadQueuedPlayers();
+		if(s.gameReady)
+			startGame(s);
 		else
-			waitForPlayers();
+			waitForPlayers(s);
 	}
 
-	private void waitForPlayers()
+	private void waitForPlayers(WorldSector s)
 	{
 		try
 		{
-			while (!gamesReady())
+			while (!s.gameReady)
 				Thread.sleep(1);
 		}
 		catch(InterruptedException e)
@@ -144,5 +107,18 @@ public class Controller {
 
 	public Player getPlayer(int pID) {
   		return players.get(pID);
+	}
+
+	public void runGameLoop() {
+		System.out.println("Game Loop has been called.");
+		while(true) {
+			for(int i = 0; i < sectors.size(); ++i) { // repeat for each sector
+				if(sectors.get(i).getPlayerCount() > 1) { // while a game is active in that sector
+					for(Player p : players.values()) {
+
+					}
+				}
+			}
+		}
 	}
 }
