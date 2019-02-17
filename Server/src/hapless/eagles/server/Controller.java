@@ -84,6 +84,7 @@ public class Controller {
 	{
 		System.out.println("Player " + pID + " gets to paint the pixel of their choosing"
 				+ " in the sector #" + sID);
+		players.get(pID);
 	}
 
 	private boolean gamesUnfinished()
