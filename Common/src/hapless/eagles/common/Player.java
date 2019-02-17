@@ -17,6 +17,7 @@ public class Player {
     private World world;
     private WorldPixel head;
     private ArrayList<WorldPixel> trail;
+    private boolean alive = true;
 
 
     /* Constructors */
@@ -76,6 +77,10 @@ public class Player {
         return playerID;
     }
 
+    public boolean isAlive(){
+        return alive;
+    }
+
 
     /* Setters */
 
@@ -95,6 +100,10 @@ public class Player {
 
     public void setHead(WorldPixel newHead) {
         this.head = newHead;
+    }
+
+    public void setDead(){
+        alive = false;
     }
 
     /* Add coordinates to trail */

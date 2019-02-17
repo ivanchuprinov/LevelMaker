@@ -54,17 +54,40 @@ public class Controller {
 	private void startGame()
 	{
 
-		for(int sID = 0; sID<sectors.size(); sID++)
+		while(gamesUnfinished())
 		{
-			WorldSector s = sectors.get(sID);
-			if(s.getPlayerCount() > 1) {
-				for (int pIndex = 0; pIndex < s.getPlayers().size(); pIndex++) {
-					Player p = s.getPlayers().get(pIndex);
-					p.move();
+			for (int sID = 0; sID < sectors.size(); sID++)
+			{
+				WorldSector s = sectors.get(sID);
+				if (s.getPlayerCount() > 1)
+				{
+					for (int pIndex = 0; pIndex < s.getPlayers().size(); pIndex++)
+					{
+						Player p = s.getPlayers().get(pIndex);
+						p.move();
+
+						if(!p.isAlive())
+							killPlayer(p.getPlayerID());
+					}
 				}
 			}
 		}
 	}
+
+	private boolean gamesUnfinished()
+	{
+		for (int sID = 0; sID < sectors.size(); sID++)
+		{
+			WorldSector s = sectors.get(sID);
+			if (s.getPlayerCount() > 1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 
 	private void endGame(int sectorID)
 	{
