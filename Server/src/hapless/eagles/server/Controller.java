@@ -41,20 +41,14 @@ public class Controller {
 	public void newPlayer(int sectorID) {
 		++playerID;
 		WorldSector sector = sectors.get(sectorID);
-		if(sector.getPlayerCount() == 0) {
-			Player p = new Player(playerID, sector);
-			p.setSectorID(sectorID);
-			players.put(playerID, p);
-			sector.addPlayer(p);
-		}
-		else
-		{
-			System.out.println("You've been added to the queue");
-			Thread.sleep(Long.MAX_VALUE);
-		}
+		Player p = new Player(playerID, sector);
+		p.setSectorID(sectorID);
+		players.put(playerID, p);
+		sector.addPlayer(p);
 	}
 
-	private void startGame()
+	/* The game is supposed to be started each time there are enough players */
+	public void startGame()
 	{
 
 		while(gamesUnfinished())
@@ -70,11 +64,26 @@ public class Controller {
 						p.move();
 
 						if(!p.isAlive())
+						{
 							killPlayer(p.getPlayerID());
+							int newSize = s.getPlayerCount();
+							if (0 < newSize && newSize < 2)
+							{
+								Player winner = s.getPlayers().get(0);
+								paintPixel(winner.getPlayerID(), winner.getSectorID());
+							}
+						}
 					}
 				}
 			}
 		}
+		endGame();
+	}
+
+	public void paintPixel(int pID, int sID)
+	{
+		System.out.println("Player " + pID + " gets to paint the pixel of their choosing"
+				+ " in the sector #" + sID);
 	}
 
 	private boolean gamesUnfinished()
@@ -90,11 +99,46 @@ public class Controller {
 		return false;
 	}
 
-
-
-	private void endGame(int sectorID)
+	private boolean gamesReady()
 	{
-		
+		for (int sID = 0; sID < sectors.size(); sID++)
+		{
+			WorldSector s = sectors.get(sID);
+			if (s.getPlayerCount() == 4)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	private void endGame()
+	{
+		for(int sID = 0; sID<sectors.size(); sID++)
+		{
+			WorldSector s = sectors.get(sID);
+			s.removeAllPlayers();
+			s.loadQueuedPlayers();
+		}
+		if(gamesReady())
+			startGame();
+		else
+			waitForPlayers();
+	}
+
+	private void waitForPlayers()
+	{
+		try
+		{
+			while (!gamesReady())
+				Thread.sleep(1);
+		}
+		catch(InterruptedException e)
+		{
+			System.out.println(e);
+		}
 	}
 
 	public Player getPlayer(int pID) {
