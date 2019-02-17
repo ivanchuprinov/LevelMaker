@@ -21,15 +21,19 @@ public class Controller {
 
 	public static void newPlayer(WorldSector sector) {
 		++playerID;
-		players.put(playerID, new Player());
+		players.put(playerID, new Player(playerID, sector));
 		sector.addPlayer();
 	}
 
 	private static void startGame() {
-		sectors.add(new WorldSector());
+		//sectors.add(new WorldSector());
 	}
 
 	private static void endGame() {
 		
+	}
+
+	public Player getPlayer(int pID) {
+  		return players.get(pID);
 	}
 }

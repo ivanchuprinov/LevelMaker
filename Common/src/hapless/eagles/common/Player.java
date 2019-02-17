@@ -11,18 +11,48 @@ public class Player {
     public static final int DIR_EAST = 2;
     public static final int DIR_WEST = -2;
 
-    private int boardID;
-    private int playerNum;
+    private int sectorID;
+    private int playerID;
     private int direction;
+    private World world;
     private WorldPixel head;
     private ArrayList<WorldPixel> trail;
 
 
     /* Constructors */
-    public Player(int x, int y, char dir) {
-        head = new WorldPixel(x, y);
-        direction = dir;
+    public Player(int ID, WorldSector sector) {
+        int playerNum = sector.getPlayerCount();
+        playerID = ID;
+        world = WorldSector.getWorld();
+        initPlayer(playerNum);
         trail = new ArrayList<>();
+    }
+
+    private void initPlayer(int pn) {
+        if(pn < 2) {
+            direction = DIR_SOUTH;
+        }
+        else {
+            direction = DIR_NORTH;
+        }
+
+        int x = world.getXSize();
+        int y = world.getYSize();
+
+        switch(pn) {
+            case 0:
+                head = new WorldPixel(x/4, y/4);
+                break;
+            case 1:
+                head = new WorldPixel((x/4)*3, y/4);
+                break;
+            case 2:
+                head = new WorldPixel(x/4, (y/4)*3);
+                break;
+            case 3:
+                head = new WorldPixel((x/4)*3, (y/4)*3);
+                break;
+        }
     }
 
     /* Getters */
@@ -38,19 +68,19 @@ public class Player {
         return trail;
     }
 
-    public int getBoardID() {
-        return boardID;
+    public int getSectorID() {
+        return sectorID;
     }
 
-    public int getPlayerNum() {
-        return playerNum;
+    public int getPlayerID() {
+        return playerID;
     }
 
 
     /* Setters */
 
-    public void setBoardID(int newBID) {
-        boardID = newBID;
+    public void setSectorID(int newSID) {
+        sectorID = newSID;
     }
 
 
@@ -61,10 +91,6 @@ public class Player {
 
     public void setCoordinates(int x, int y) {
         head = new WorldPixel(x, y);
-    }
-
-    public void setPlayerNum(int pn) {
-        playerNum = pn;
     }
 
     public void setHead(WorldPixel newHead) {

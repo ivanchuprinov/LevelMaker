@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class WorldSector {
     private int x;
     private int y;
-    private World world;
+    private static World world;
     private int playerCount;
 
     public WorldSector(World parentWorld, int x, int y) {
-        this.world = parentWorld;
+        world = parentWorld;
         this.x = x;
         this.y = y;
     }
@@ -59,5 +59,9 @@ public class WorldSector {
      */
     public int getWorldYStart() {
         return (world.getYSectorSize() * getY());
+    }
+
+    public static World getWorld() {
+        return world;
     }
 }
