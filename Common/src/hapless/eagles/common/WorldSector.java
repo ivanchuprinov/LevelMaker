@@ -12,8 +12,15 @@ import java.util.ArrayList;
 public class WorldSector {
     private int x;
     private int y;
+
+    private int minX;
+    private int minY;
+    private int maxX;
+    private int maxY;
+
     private World world;
     private ArrayList<Player> players;
+
 
 
     public WorldSector(World parentWorld, int x, int y) {
@@ -39,6 +46,7 @@ public class WorldSector {
     {
         players.remove(p);
     }
+
 
 
     /**
