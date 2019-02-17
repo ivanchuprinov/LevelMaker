@@ -41,20 +41,14 @@ public class Controller {
 	public void newPlayer(int sectorID) {
 		++playerID;
 		WorldSector sector = sectors.get(sectorID);
-		if(sector.getPlayerCount() == 0) {
-			Player p = new Player(playerID, sector);
-			p.setSectorID(sectorID);
-			players.put(playerID, p);
-			sector.addPlayer(p);
-		}
-		else
-		{
-			System.out.println("You've been added to the queue");
-			Thread.sleep(Long.MAX_VALUE);
-		}
+		Player p = new Player(playerID, sector);
+		p.setSectorID(sectorID);
+		players.put(playerID, p);
+		sector.addPlayer(p);
 	}
 
-	private void startGame()
+	/* The game is supposed to be started each time there are enough players */
+	public void startGame()
 	{
 
 		while(gamesUnfinished())
@@ -70,11 +64,25 @@ public class Controller {
 						p.move();
 
 						if(!p.isAlive())
+						{
 							killPlayer(p.getPlayerID());
+							int newSize = s.getPlayerCount();
+							if (0 < newSize && newSize < 2)
+							{
+								Player winner = s.getPlayers().get(0);
+								paintPixel(winner.getPlayerID(), winner.getSectorID());
+							}
+						}
 					}
 				}
 			}
 		}
+	}
+
+	public void paintPixel(int pID, int sID)
+	{
+		System.out.println("Player " + pID + " gets to paint the pixel of their choosing"
+				+ " in the sector #" + sID);
 	}
 
 	private boolean gamesUnfinished()
@@ -92,9 +100,9 @@ public class Controller {
 
 
 
-	private void endGame(int sectorID)
+	private void endGame()
 	{
-		
+		/* Thanos did nothing wrong */
 	}
 
 	public Player getPlayer(int pID) {

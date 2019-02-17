@@ -37,10 +37,10 @@ public class WorldSector {
      * Add a player to the list.
      */
     public void addPlayer(Player p) {
-        if(players.size() < 4)
-            players.add(p);
-        else
+        if(players.size() > 1)
             playerQueue.add(p);
+        else
+            players.add(p);
     }
 
     /**
