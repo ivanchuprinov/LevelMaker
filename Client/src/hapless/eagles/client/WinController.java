@@ -3,15 +3,13 @@ package hapless.eagles.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-
 /**
- * Created by Kneesnap on 2/17/19.
+ * Created by chuprii on 2/17/19.
  */
-public class LoseController {
-
+public class WinController {
     @FXML
     private void backToMenu(ActionEvent evt) {
-        System.out.println("Got loser press.");
+        System.out.println("Got winner press.");
         //TODO: Shut menu.
         //TODO: Open zone selector.
     }

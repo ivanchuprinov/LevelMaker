@@ -2,6 +2,7 @@ package hapless.eagles.client.handler;
 
 import hapless.eagles.client.ClientGameController;
 import hapless.eagles.client.LoseController;
+import hapless.eagles.client.WinController;
 import hapless.eagles.common.packets.clientbound.*;
 import hapless.eagles.common.packets.serverbound.PacketChooseSector;
 import hapless.eagles.common.utils.FXUtil;
@@ -55,5 +56,7 @@ public class ClientPacketHandler implements IClientPacketHandler {
     @Override
     public void handleWin(ChannelHandlerContext context, PacketWinGame packet) {
         //TODO
+        Platform.runLater(() ->
+                FXUtil.makeFXMLTemplateWindow(null, FXUtil.CLIENT_WIN_TEMPLATE, "You Win!", new WinController()).showAndWait());
     }
 }

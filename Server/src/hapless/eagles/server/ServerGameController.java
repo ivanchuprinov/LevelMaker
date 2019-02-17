@@ -19,6 +19,9 @@ public class ServerGameController {
         this.instance = instance;
     }
 
+    static Color[] colors = {Color.WHITE, Color.BLACK};
+    static int colorID = 0;
+
     /**
      * Called at an interval, a server tick runs all server update logic.
      */
@@ -38,7 +41,11 @@ public class ServerGameController {
                 }
 
                 // Set Wall.
-                newPos.setWallColorId(Utils.toRGB(Color.BLACK)); //TODO: COLOR.
+                newPos.setWallColorId(Utils.toRGB(colors[colorID]));
+                colorID++;
+                if(colorID == 2) //TODO: Hard-coded color change. Need to know number of players.
+                    colorID = 0;
+
                 instance.getClients().writeAndFlush(new PacketSetWallState(newPos));
                 sendPacket(player, new PacketSnakePosition(newPos.getX(), newPos.getY()));
             }
@@ -85,7 +92,15 @@ public class ServerGameController {
         if (sector.getPlayers().size() == 1) {
             Player winner = sector.getPlayers().remove(0);
             winner.setSector(null);
+
             sendPacket(winner, new PacketWinGame(sector));
+
+            winner.setSector(null);
+
+            for (WorldPixel pixel : winner.getTrail()) {
+                pixel.setWallColorId(-1);
+                instance.getClients().writeAndFlush(new PacketSetWallState(pixel));
+            }
         }
 
     }
