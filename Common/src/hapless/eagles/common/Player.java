@@ -1,31 +1,28 @@
 package hapless.eagles.common;
 
-import java.util.ArrayList;
-
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.application.Application;
-import javafx.scene.*;
-import javafx.scene.input.*;
-import javafx.stage.*;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.shape.*;
-import javafx.scene.effect.*;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import javafx.scene.image.*;
-import javafx.geometry.*;
+import javafx.scene.effect.Glow;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.StrokeLineCap;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
  * Created by chuprii on 2/16/19.
  */
+@Getter
 public class Player {
     public static final int DIR_NORTH = 1;
     public static final int DIR_SOUTH = -1;
     public static final int DIR_EAST = 2;
     public static final int DIR_WEST = -2;
 
+    @Setter private WorldSector sector;
     private int sectorID;
     private int playerID;
     private int direction;
@@ -97,16 +94,32 @@ public class Player {
         return head;
     }
 
-    public int getDirection() {
-        return direction;
+    public void setHead(WorldPixel newHead) {
+        this.head = newHead;
     }
 
 //    public ArrayList<WorldPixel> getTrail() {
 //        return trail;
 //    }
 
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int newDir) {
+        if (newDir != direction && newDir != -direction)
+            direction = newDir;
+    }
+
     public int getSectorID() {
         return sectorID;
+    }
+
+
+    /* Setters */
+
+    public void setSectorID(int newSID) {
+        sectorID = newSID;
     }
 
     public int getPlayerID() {
@@ -117,25 +130,8 @@ public class Player {
         return alive;
     }
 
-
-    /* Setters */
-
-    public void setSectorID(int newSID) {
-        sectorID = newSID;
-    }
-
-
-    public void setDirection(int newDir) {
-        if (newDir != direction && newDir != -direction)
-            direction = newDir;
-    }
-
     public void setCoordinates(int x, int y) {
         head = new WorldPixel(x, y);
-    }
-
-    public void setHead(WorldPixel newHead) {
-        this.head = newHead;
     }
 
     public void setDead(){

@@ -28,4 +28,10 @@ public class ServerPacketHandlerAdapter extends SimpleChannelInboundHandler<Serv
         cause.printStackTrace();
         ctx.close();
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext context) {
+        System.out.println(context.channel().remoteAddress() + " disconnected.");
+        instance.getClients().remove(context.channel());
+    }
 }

@@ -1,24 +1,23 @@
 package hapless.eagles.server;
 
 import hapless.eagles.common.World;
-import hapless.eagles.common.WorldSector;
 import hapless.eagles.common.packets.serverbound.IServerPacketHandler;
 import hapless.eagles.common.utils.Config;
 import hapless.eagles.server.network.ServerInitHandler;
+import hapless.eagles.server.network.ServerPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.util.concurrent.DefaultEventExecutor;
 import lombok.Getter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represents a game server instance.
@@ -26,8 +25,8 @@ import java.util.Map;
  */
 @Getter
 public class ServerInstance {
-    private Map<WorldSector, ChannelGroup> channelGroups = new HashMap<>();
-    private IServerPacketHandler packetHandler; //TODO: Create.
+    private ChannelGroup clients;
+    private IServerPacketHandler packetHandler;
     private World world;
     private String name;
     private int port;
@@ -54,6 +53,7 @@ public class ServerInstance {
      */
     public void startServer() {
         EventLoopGroup group = new NioEventLoopGroup();
+        clients = new DefaultChannelGroup(new DefaultEventExecutor());
 
         ServerBootstrap bootstrap = new ServerBootstrap()
                 .group(group)
@@ -64,6 +64,7 @@ public class ServerInstance {
                 .childHandler(new ObjectDecoder(ClassResolvers.weakCachingResolver(getClass().getClassLoader())))
                 .childHandler(new ServerInitHandler(this));
 
+        this.packetHandler = new ServerPacketHandler(this);
         bootstrap.bind(this.port).channel().closeFuture().addListener(evt -> {
             group.shutdownGracefully();
             System.out.println(getName() + " is shutting down.");

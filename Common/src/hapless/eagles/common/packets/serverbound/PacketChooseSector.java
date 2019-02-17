@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacketChooseSector extends ServerboundPacket {
-    private int sectorId;
+    private int sectorX;
+    private int sectorY;
 
     @Override
     protected void handleIncomingPacket(IServerPacketHandler handler, ChannelHandlerContext context, Player player) {

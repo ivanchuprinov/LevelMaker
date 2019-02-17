@@ -20,9 +20,9 @@ public class ServerInitHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
-        //TODO: Let the user pick the match to join. For now it's random.
         System.out.println(ctx.channel().remoteAddress().toString() + " connected.");
         ctx.pipeline().remove(this);
+        instance.getClients().add(ctx.channel());
         NetworkUtil.setup(ctx.pipeline(), new DefaultEventExecutorGroup(10), new ServerPacketHandlerAdapter(instance));
         ctx.channel().writeAndFlush(new PacketLoadWorld(instance.getWorld()));
     }

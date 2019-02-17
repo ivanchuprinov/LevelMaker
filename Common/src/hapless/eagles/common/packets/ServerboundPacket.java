@@ -5,11 +5,13 @@ import hapless.eagles.common.packets.serverbound.IServerPacketHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
 
+import java.io.Serializable;
+
 /**
  * A network packet sent from the client to the server.
  * Created by Kneesnap on 2/16/2019.
  */
-public abstract class ServerboundPacket {
+public abstract class ServerboundPacket implements Serializable {
     public static final AttributeKey<Player> PLAYER = AttributeKey.newInstance("PLAYER");
 
     /**

@@ -16,13 +16,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacketChangePixel extends ServerboundPacket {
-    private int pixelX;
-    private int pixelY;
+    private int localX;
+    private int localY;
     private int newColor;
 
     @Override
     protected void handleIncomingPacket(IServerPacketHandler handler, ChannelHandlerContext context, Player player) {
         handler.handleChangePixel(context, player, this);
-        //TODO: Don't allow doing multiple pixels, nor selecting if you haven't won.
     }
 }
