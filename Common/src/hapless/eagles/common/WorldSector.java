@@ -12,48 +12,28 @@ import java.util.ArrayList;
 public class WorldSector {
     private int x;
     private int y;
-
-    private int minX;
-    private int minY;
-    private int maxX;
-    private int maxY;
-
     private World world;
-    private int playerCnt;
-
-
+    private int playerCount;
 
     public WorldSector(World parentWorld, int x, int y) {
         this.world = parentWorld;
         this.x = x;
         this.y = y;
-        playerCnt = 0;
     }
-
-    /**
-     * Get player count.
-     * @return number of players in the sector.
-     */
-    public int getPlayerCnt() {return playerCnt;}
 
     /**
      * Add a player to the list.
      */
     public void addPlayer(){
-        ++playerCnt;
+        ++playerCount;
     }
-
-
 
     /**
      * Remove a player from the list.
      */
-    public void removePlayer()
-    {
-        --playerCnt;
+    public void removePlayer() {
+        --playerCount;
     }
-
-
 
     /**
      * Gets a pixel in this sector.
@@ -62,7 +42,22 @@ public class WorldSector {
      * @return pixel
      */
     public WorldPixel getPixel(int localX, int localY) {
-        return world.getPixel((world.getXSectorSize() * getX()) + localX, (world.getYSectorSize() * getY()) + localY);
+        return world.getPixel(getWorldXStart() + localX, getWorldYStart() + localY);
     }
 
+    /**
+     * Get the world x coordinate this sector starts at.
+     * @return xStart
+     */
+    public int getWorldXStart() {
+        return (world.getXSectorSize() * getX());
+    }
+
+    /**
+     * Get the world y coordinate this sector starts at.
+     * @return yStart
+     */
+    public int getWorldYStart() {
+        return (world.getYSectorSize() * getY());
+    }
 }
