@@ -32,7 +32,6 @@ public class Player {
     // private ArrayList<WorldPixel> trail;
     private ObservableList trail;
     private Path path;
-    private ArrayList<WorldPixel> trail;
     private boolean alive = true;
 
 
