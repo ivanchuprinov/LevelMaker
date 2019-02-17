@@ -50,7 +50,6 @@ public class ClientPacketHandler implements IClientPacketHandler {
     public void handleGameOver(ChannelHandlerContext context) {
         Platform.runLater(() ->
                 FXUtil.makeFXMLTemplateWindow(null, FXUtil.CLIENT_LOSE_TEMPLATE, "Game Over", new LoseController()).showAndWait());
-        //TODO
     }
 
     @Override

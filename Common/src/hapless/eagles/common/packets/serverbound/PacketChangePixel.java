@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * Allows the winner to change a pixel.
- * TODO: WE NEED TO MAKE GAME PACKETS RUN ON A THREAD, OTHERWISE RACE CONDITIONS AND THE SUCH.
  * Created by Kneesnap on 2/16/2019.
  */
 @Getter

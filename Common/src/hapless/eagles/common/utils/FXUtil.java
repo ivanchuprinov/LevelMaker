@@ -15,6 +15,7 @@ import java.io.IOException;
 public class FXUtil {
     public static final String CLIENT_INGAME_TEMPLATE = "client/game.fxml";
     public static final String CLIENT_LOSE_TEMPLATE = "client/lose.fxml";
+    public static final String SERVER_VIEW_TEMPLATE = "server/view.fxml";
 
     /**
      * Gets the FXMLLoader by its name.

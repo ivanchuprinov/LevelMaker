@@ -3,6 +3,7 @@ package hapless.eagles.server;
 import hapless.eagles.common.World;
 import hapless.eagles.common.packets.serverbound.IServerPacketHandler;
 import hapless.eagles.common.utils.Config;
+import hapless.eagles.common.utils.FXUtil;
 import hapless.eagles.server.network.ServerInitHandler;
 import hapless.eagles.server.network.ServerPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -19,6 +20,7 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.Getter;
 
@@ -31,6 +33,7 @@ public class ServerInstance {
     private ChannelGroup clients;
     private IServerPacketHandler packetHandler;
     private ServerGameController gameController;
+    private UIController uiController;
     private World world;
     private String name;
     private int port;
@@ -86,5 +89,15 @@ public class ServerInstance {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), evt -> getGameController().runServerTick()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+    }
+
+    /**
+     * Setup the MapViewer GUI.
+     * @param stage stage
+     */
+    public void startGUI(Stage stage) {
+        stage.setResizable(false);
+        FXUtil.loadFXMLTemplate(stage, FXUtil.SERVER_VIEW_TEMPLATE, this.uiController = new UIController(this));
+        stage.show();
     }
 }

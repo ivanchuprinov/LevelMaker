@@ -23,6 +23,9 @@ public class ServerGameController {
      * Called at an interval, a server tick runs all server update logic.
      */
     public void runServerTick() {
+        if (instance.getUiController() != null)
+            instance.getUiController().getWorldView().renderWorld();
+
         World world = instance.getWorld();
         for (WorldSector sector : world.getAllSectors()) {
             for (Player player : sector.getPlayers()) {
