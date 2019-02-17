@@ -1,35 +1,73 @@
 package hapless.eagles.server;
 
 import hapless.eagles.common.Player;
+import hapless.eagles.common.World;
 import hapless.eagles.common.WorldSector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Controller {
-	private static HashMap<Integer, Player> players = new HashMap<Integer, Player>();
-	private static ArrayList<WorldSector> sectors = new ArrayList<WorldSector>();
-	private static int playerID = 0;
+	private HashMap<Integer, Player> players = new HashMap<Integer, Player>();
+	private ArrayList<WorldSector> sectors = new ArrayList<WorldSector>();
+	private int playerID = 0;
+	private World world;
 
-  public static void main(String[] args) {
-	  
+	public Controller(World world)
+	{
+		this.world = world;
+
+		WorldSector[][] sectors = world.getSectors();
+		for(int i = 0; i<sectors.length; i++)
+		{
+			for(int j = 0; j<sectors[i].length; i++)
+			{
+				this.sectors.add(sectors[i][j]);
+			}
+		}
 	}
 
-	public static void killPlayer(int player) {
-		players.remove(player);
+	public void killPlayer(int pID) {
+
+		Player p = players.remove(pID);
+
+		sectors.get(p.getSectorID()).removePlayer(players.get(pID));
+
 	}
 
-	public static void newPlayer(WorldSector sector) {
+	public void newPlayer(int sectorID) {
 		++playerID;
-		players.put(playerID, new Player(playerID, sector));
-		sector.addPlayer();
+		WorldSector sector = sectors.get(sectorID);
+		if(sector.getPlayerCount() == 0) {
+			Player p = new Player(playerID, sector);
+			p.setSectorID(sectorID);
+			players.put(playerID, p);
+			sector.addPlayer(p);
+		}
+		else
+		{
+			System.out.println("You've been added to the queue");
+			System.wait(Forever);
+		}
 	}
 
-	private static void startGame() {
-		//sectors.add(new WorldSector());
+	private void startGame()
+	{
+
+		for(int sID = 0; sID<sectors.size(); sID++)
+		{
+			WorldSector s = sectors.get(sID);
+			if(s.getPlayerCount() > 1) {
+				for (int pIndex = 0; pIndex < s.getPlayers().size(); pIndex++) {
+					Player p = s.getPlayers().get(pIndex);
+					p.move();
+				}
+			}
+		}
 	}
 
-	private static void endGame() {
+	private void endGame(int sectorID)
+	{
 		
 	}
 
