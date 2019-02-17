@@ -77,6 +77,7 @@ public class Controller {
 				}
 			}
 		}
+		endGame();
 	}
 
 	public void paintPixel(int pID, int sID)
@@ -98,11 +99,46 @@ public class Controller {
 		return false;
 	}
 
+	private boolean gamesReady()
+	{
+		for (int sID = 0; sID < sectors.size(); sID++)
+		{
+			WorldSector s = sectors.get(sID);
+			if (s.getPlayerCount() == 4)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 
 	private void endGame()
 	{
-		/* Thanos did nothing wrong */
+		for(int sID = 0; sID<sectors.size(); sID++)
+		{
+			WorldSector s = sectors.get(sID);
+			s.removeAllPlayers();
+			s.loadQueuedPlayers();
+		}
+		if(gamesReady())
+			startGame();
+		else
+			waitForPlayers();
+	}
+
+	private void waitForPlayers()
+	{
+		try
+		{
+			while (!gamesReady())
+				Thread.sleep(1);
+		}
+		catch(InterruptedException e)
+		{
+			System.out.println(e);
+		}
 	}
 
 	public Player getPlayer(int pID) {
