@@ -25,7 +25,11 @@ public class ServerInitHandler extends ChannelInboundHandlerAdapter {
         System.out.println(ctx.channel().remoteAddress().toString() + " connected.");
         ctx.pipeline().remove(this);
         instance.getClients().add(ctx.channel());
-        ctx.channel().attr(ServerboundPacket.PLAYER).set(new Player(instance.getWorld()));
+
+        Player player = new Player(instance.getWorld());
+        player.setChannel(ctx.channel());
+        ctx.channel().attr(ServerboundPacket.PLAYER).set(player);
+
         NetworkUtil.setup(ctx.pipeline(), new DefaultEventExecutorGroup(10), new ServerPacketHandlerAdapter(instance));
         ctx.channel().writeAndFlush(new PacketLoadWorld(instance.getWorld()));
     }

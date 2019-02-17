@@ -2,7 +2,6 @@ package hapless.eagles.server.network;
 
 import hapless.eagles.common.Player;
 import hapless.eagles.common.packets.clientbound.PacketChangeMapPixel;
-import hapless.eagles.common.packets.clientbound.PacketStartGame;
 import hapless.eagles.common.packets.serverbound.IServerPacketHandler;
 import hapless.eagles.common.packets.serverbound.PacketChangePixel;
 import hapless.eagles.common.packets.serverbound.PacketChooseSector;
@@ -14,7 +13,6 @@ import lombok.Getter;
 
 /**
  * Handles serverbound packets.
- * TODO: Handle packets.
  * Created by Kneesnap on 2/16/2019.
  */
 @Getter
@@ -24,6 +22,7 @@ public class ServerPacketHandler implements IServerPacketHandler {
 
     @Override
     public void handleSetDirection(ChannelHandlerContext ctx, Player player, PacketSetDirection packet) {
+        //TODO: Prevent opposite direction.
         player.setDirection(packet.getDirection());
     }
 
@@ -37,6 +36,6 @@ public class ServerPacketHandler implements IServerPacketHandler {
     @Override
     public void handleChooseSector(ChannelHandlerContext context, Player player, PacketChooseSector packet) {
         player.setSector(instance.getWorld().getSector(packet.getSectorX(), packet.getSectorY()));
-        context.writeAndFlush(new PacketStartGame()); //TODO: Do better logic.
+        player.getSector().getPlayerQueue().add(player);
     }
 }

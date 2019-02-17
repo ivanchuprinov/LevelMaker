@@ -20,18 +20,19 @@ public class ClientPacketHandler implements IClientPacketHandler {
 
     @Override
     public void handleLoadWorld(ChannelHandlerContext context, PacketLoadWorld packet) {
-        Platform.runLater(() -> controller.makeGUI(packet.getWorld()));
+        controller.setWorld(packet.getWorld());
         context.writeAndFlush(new PacketChooseSector(0, 0)); //TODO: Allow selecting sector.
+        System.out.println("Waiting for enough players...");
     }
 
     @Override
     public void handleSnakePosition(ChannelHandlerContext context, PacketSnakePosition packet) {
-        getController().getWorldView().updatePosition(packet.getLocalX(), packet.getLocalY());
+        getController().getWorldView().updatePosition(packet.getWorldX(), packet.getWorldY());
     }
 
     @Override
     public void handleWallState(ChannelHandlerContext context, PacketSetWallState packet) {
-
+        getController().getWorld().getPixel(packet.getWorldX(), packet.getWorldY()).setWallColorId(packet.getColorId());
     }
 
     @Override
@@ -41,6 +42,6 @@ public class ClientPacketHandler implements IClientPacketHandler {
 
     @Override
     public void handleStartGame(ChannelHandlerContext context) {
-
+        Platform.runLater(controller::makeGUI);
     }
 }

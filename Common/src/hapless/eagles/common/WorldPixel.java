@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Getter
 public class WorldPixel implements Serializable {
     @Setter private int colorId;
-    @Setter private int wallColorId;
+    @Setter private int wallColorId = -1;
     private World world;
     private int x;
     private int y;
@@ -38,7 +38,7 @@ public class WorldPixel implements Serializable {
      * @return hasWall
      */
     public boolean hasWall() {
-        return this.wallColorId > 0;
+        return this.wallColorId >= 0;
     }
 
     /**

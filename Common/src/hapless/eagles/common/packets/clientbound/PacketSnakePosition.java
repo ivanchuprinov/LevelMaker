@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacketSnakePosition extends ClientboundPacket {
-    private int localX;
-    private int localY;
+    private int worldX;
+    private int worldY;
 
     @Override
     public void handleIncomingPacket(IClientPacketHandler handler, ChannelHandlerContext context) {

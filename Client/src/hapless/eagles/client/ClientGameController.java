@@ -2,7 +2,6 @@ package hapless.eagles.client;
 
 import hapless.eagles.client.handler.ClientInitHandler;
 import hapless.eagles.client.handler.ClientPacketHandler;
-import hapless.eagles.common.Player;
 import hapless.eagles.common.World;
 import hapless.eagles.common.WorldView;
 import hapless.eagles.common.packets.clientbound.IClientPacketHandler;
@@ -21,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Controls the game client-side.
@@ -29,8 +29,7 @@ import lombok.Getter;
  */
 @Getter
 public class ClientGameController {
-    private World world;
-    private Player player;
+    @Setter private World world;
     private WorldView worldView;
     private IClientPacketHandler packetHandler;
     private Channel channel;
@@ -43,9 +42,8 @@ public class ClientGameController {
     /**
      * Creates the gui with a world.
      */
-    public void makeGUI(World world) {
-        this.world = world;
-        GameUIController gameController = new GameUIController(world);
+    public void makeGUI() {
+        GameUIController gameController = new GameUIController(getWorld());
         AnchorPane root = FXUtil.loadFXMLTemplate(mainStage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
         this.worldView = (WorldView) root.getChildren().get(0); // messy, but w/e.
         gameController.postSetup(mainStage);
@@ -82,7 +80,10 @@ public class ClientGameController {
      */
     public void runGameLoop() {
         System.out.println("Game Loop has been called.");
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), evt -> worldView.renderWorld()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(25), evt -> {
+            if (worldView != null)
+                worldView.renderWorld();
+        }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }

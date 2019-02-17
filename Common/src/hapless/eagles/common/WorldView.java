@@ -14,7 +14,7 @@ public class WorldView extends Canvas {
     private World world;
     private double centerWorldXTile;
     private double centerWorldYTile;
-    private double displayRadius = 4;
+    private double displayRadius = 10;
 
     public WorldView(World world) {
         this.world = world;
@@ -23,7 +23,11 @@ public class WorldView extends Canvas {
 
         setOnKeyPressed(evt -> {
 
-            if (evt.getCode() == KeyCode.UP) {
+            if (evt.getCode() == KeyCode.EQUALS) {
+                this.displayRadius--;
+            } else if (evt.getCode() == KeyCode.MINUS) {
+                this.displayRadius++;
+            } else if (evt.getCode() == KeyCode.UP) {
                 this.centerWorldYTile -= .5;
             } else if (evt.getCode() == KeyCode.DOWN) {
                 this.centerWorldYTile += .5;
@@ -32,7 +36,7 @@ public class WorldView extends Canvas {
             } else if (evt.getCode() == KeyCode.RIGHT) {
                 this.centerWorldXTile += .5;
             } else {
-                world.randomizeBoard();
+                return;
             }
 
             renderWorld();
@@ -46,7 +50,6 @@ public class WorldView extends Canvas {
         if (getWidth() == 0 || getHeight() == 0)
             return; // Don't render if our height is zero.
 
-        System.out.println("Rendering World: [" + getWidth() + ", " + getHeight() + "]");
         GraphicsContext graphics = getGraphicsContext2D();
         graphics.clearRect(0, 0, getWidth(), getHeight()); // Clear display.
 

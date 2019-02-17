@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Holds static utilities.
@@ -130,7 +129,7 @@ public class Utils {
      * @return randValue
      */
     public static int randInt(int min, int max) {
-        return ThreadLocalRandom.current().nextInt(min, max);
+        return (int) ((Math.random() * ((max - min) + 1)) + min);
     }
 
     /**

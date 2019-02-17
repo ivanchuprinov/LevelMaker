@@ -33,10 +33,7 @@ public class ServerGameController {
                 WorldPixel newPos = player.move();
 
                 // Check if player died.
-                int xStart = sector.getWorldXStart();
-                int yStart = sector.getWorldYStart();
-                if (newPos.hasWall() || newPos.getX() < xStart || newPos.getX() >= xStart + world.getXSectorSize()
-                        || newPos.getY() < yStart || newPos.getY() >= yStart + world.getYSectorSize()) {
+                if (newPos == null || newPos.hasWall()) {
                     killPlayer(player);
                     continue;
                 }
@@ -44,7 +41,7 @@ public class ServerGameController {
                 // Set Wall.
                 newPos.setWallColorId(Utils.toRGB(Color.BLACK)); //TODO: COLOR.
                 instance.getClients().writeAndFlush(new PacketSetWallState(newPos));
-                sendPacket(player, new PacketSnakePosition(newPos.getX() - player.getSector().getWorldXStart(), newPos.getY() - player.getSector().getWorldYStart()));
+                sendPacket(player, new PacketSnakePosition(newPos.getX(), newPos.getY()));
             }
 
 
@@ -61,8 +58,13 @@ public class ServerGameController {
         }
     }
 
+    /**
+     * Send a packet to a player.
+     * @param player The player to send the packet to.
+     * @param packet The packet to send.
+     */
     public void sendPacket(Player player, ClientboundPacket packet) {
-        //TODO!!!
+        player.getChannel().writeAndFlush(packet);
     }
 
     /**
@@ -72,10 +74,12 @@ public class ServerGameController {
         player.getSector().removePlayer(player);
         player.setSector(null);
 
+        /*
         for (WorldPixel pixel : player.getTrail()) {
-            pixel.setWallColorId(0);
+            pixel.setWallColorId(-1);
             instance.getClients().writeAndFlush(new PacketSetWallState(pixel));
         }
+        */
 
         //TODO: Tell player they are dead.
 
