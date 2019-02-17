@@ -19,6 +19,10 @@ public class World implements Serializable {
     private WorldPixel[][] pixels;
     private WorldSector[][] sectors;
 
+    public World() {
+        //load(config);
+    }
+
     /**
      * Load world information from a config.
      * @param config The config to load from.

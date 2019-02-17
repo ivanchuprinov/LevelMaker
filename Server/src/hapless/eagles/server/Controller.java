@@ -3,6 +3,7 @@ package hapless.eagles.server;
 import hapless.eagles.common.Player;
 import hapless.eagles.common.World;
 import hapless.eagles.common.WorldSector;
+import hapless.eagles.common.utils.Config;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ public class Controller {
 	private int playerID = 0;
 	private World world;
 
-	public Controller(World world)
+	public Controller(World w)
 	{
-		this.world = world;
+		this.world = w;
 
 		WorldSector[][] sectors = world.getSectors();
-		for(int i = 0; i<sectors.length; i++)
+		for(int i = 0; i < sectors.length; i++)
 		{
-			for(int j = 0; j<sectors[i].length; i++)
+			for(int j = 0; j < sectors[i].length; j++)
 			{
 				this.sectors.add(sectors[i][j]);
 			}
@@ -113,10 +114,8 @@ public class Controller {
 		System.out.println("Game Loop has been called.");
 		while(true) {
 			for(int i = 0; i < sectors.size(); ++i) { // repeat for each sector
-				if(sectors.get(i).getPlayerCount() > 1) { // while a game is active in that sector
-					for(Player p : players.values()) {
-
-					}
+				if(sectors.get(i).gameReady) { // while a game is active in that sector
+					startGame(sectors.get(i));
 				}
 			}
 		}
