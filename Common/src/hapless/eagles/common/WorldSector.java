@@ -19,7 +19,7 @@ public class WorldSector {
     private int maxY;
 
     private World world;
-    private int numPlayers;
+    private int playerCnt;
 
 
 
@@ -27,28 +27,30 @@ public class WorldSector {
         this.world = parentWorld;
         this.x = x;
         this.y = y;
-        numPlayers = 0;
+        playerCnt = 0;
     }
+
+    /**
+     * Get player count.
+     * @return number of players in the sector.
+     */
+    public int getPlayerCnt() {return playerCnt;}
 
     /**
      * Add a player to the list.
-     * @param p The player to be added.
      */
     public void addPlayer(){
-        ++numPlayers;
+        ++playerCnt;
     }
 
-    public void setCoord() {
 
-    }
 
     /**
      * Remove a player from the list.
-     * @param p The player to be removed.
      */
-    public void removePlayer(Player p)
+    public void removePlayer()
     {
-        --numPlayers;
+        --playerCnt;
     }
 
 
