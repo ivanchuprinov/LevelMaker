@@ -3,11 +3,13 @@ package hapless.eagles.common.packets;
 import hapless.eagles.common.packets.clientbound.IClientPacketHandler;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.io.Serializable;
+
 /**
  * A packet sent from the server to the client.
  * Created by Kneesnap on 2/16/2019.
  */
-public abstract class ClientboundPacket {
+public abstract class ClientboundPacket implements Serializable {
 
     /**
      * Handles an incoming packet.

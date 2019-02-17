@@ -1,13 +1,17 @@
 package hapless.eagles.client.handler;
 
 import hapless.eagles.client.ClientGameController;
+import hapless.eagles.common.packets.ClientboundPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.AllArgsConstructor;
 
 /**
- * Created by Kneesnap on 2/16/19.
+ * Handles client-side packets.
+ * Created by Kneesnap on 2/16/2019.
  */
-public class ClientGameHandler extends SimpleChannelInboundHandler<String> {
+@AllArgsConstructor
+public class ClientGameHandler extends SimpleChannelInboundHandler<ClientboundPacket> {
     private ClientGameController clientController;
 
     @Override
@@ -16,9 +20,9 @@ public class ClientGameHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String packet) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ClientboundPacket packet) throws Exception {
         System.out.println("Packet: " + packet);
-        //packet.handleIncomingPacket(clientController.getPacketHandler(), channelHandlerContext);
+        packet.handleIncomingPacket(clientController.getPacketHandler(), channelHandlerContext);
     }
 
     @Override

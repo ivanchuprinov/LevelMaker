@@ -5,18 +5,19 @@ import hapless.eagles.common.utils.Utils;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 /**
  * Represents the entire world.
  * Created by Kneesnap on 2/16/19.
  */
 @Getter
-public class World {
+public class World implements Serializable {
+    private static final Color[] COLORS = {Color.YELLOW, Color.GREEN, Color.HOTPINK, Color.RED, Color.BLUE, Color.GRAY};
     private int xSectorSize;
     private int ySectorSize;
     private WorldPixel[][] pixels;
     private WorldSector[][] sectors;
-
-    private static final Color[] COLORS = {Color.YELLOW, Color.GREEN, Color.HOTPINK, Color.RED, Color.BLUE, Color.GRAY};
 
     /**
      * Load world information from a config.
@@ -117,6 +118,6 @@ public class World {
     public void randomizeBoard() {
         for (WorldPixel[] array : pixels)
             for (WorldPixel pixel : array)
-                pixel.setColor(Utils.randElement(COLORS));
+                pixel.setColorId(Utils.toRGB(Utils.randElement(COLORS)));
     }
 }

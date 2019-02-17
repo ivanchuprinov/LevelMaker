@@ -1,23 +1,22 @@
 package hapless.eagles.client;
 
 import hapless.eagles.client.handler.ClientInitHandler;
+import hapless.eagles.client.handler.ClientPacketHandler;
 import hapless.eagles.common.Player;
 import hapless.eagles.common.World;
 import hapless.eagles.common.packets.clientbound.IClientPacketHandler;
 import hapless.eagles.common.ui.GameUIController;
-import hapless.eagles.common.utils.Config;
 import hapless.eagles.common.utils.FXUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.SneakyThrows;
-
-import java.io.File;
 
 /**
  * Controls the game client-side.
@@ -31,21 +30,21 @@ public class ClientGameController {
     private AnchorPane clientRootPane;
     private IClientPacketHandler packetHandler; //TODO
     private Channel channel;
+    private Stage mainStage;
+
+    public ClientGameController(Stage stage) {
+        this.mainStage = stage;
+    }
 
     /**
-     * Creates the gui.
-     * @param primaryStage The stage to make the gui for.
+     * Creates the gui with a world.
      */
-    @SneakyThrows
-    public void makeGUI(Stage primaryStage) {
-        this.world = new World(); //TODO
-        world.load(new Config(new File("debug.cfg")));
-        System.out.println("Loaded World Config.");
-
+    public void makeGUI(World world) {
+        this.world = world;
         GameUIController gameController = new GameUIController(world);
-        this.clientRootPane = FXUtil.loadFXMLTemplate(primaryStage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
-        gameController.postSetup(primaryStage);
-        primaryStage.show();
+        this.clientRootPane = FXUtil.loadFXMLTemplate(mainStage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
+        gameController.postSetup(mainStage);
+        mainStage.show();
     }
 
     /**
@@ -64,6 +63,7 @@ public class ClientGameController {
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .handler(new ClientInitHandler(this));
 
+        this.packetHandler = new ClientPacketHandler(this);
         this.channel = clientBootstrap.connect(SERVER_IP, PORT).channel();
         this.channel.closeFuture().addListener(evt -> {
             System.out.println("Your connection was unexpectedly terminated.");

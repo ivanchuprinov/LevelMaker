@@ -1,11 +1,12 @@
 package hapless.eagles.common.utils;
 
+import javafx.scene.paint.Color;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by Kneesnap on 2/16/2019.
  */
 public class Utils {
+    private static Map<Integer, Color> colorCacheMap = new HashMap<>();
 
     /**
      * Verify a condition is true, otherwise throw an exception.
@@ -141,5 +143,26 @@ public class Utils {
             throw new RuntimeException("Cannot get random element from empty array.");
 
         return array[randInt(0, array.length - 1)];
+    }
+
+    /**
+     * Get a Color object from an integer.
+     * @param rgb The integer to get the color from.
+     * @return color
+     */
+    public static Color fromRGB(int rgb) {
+        return colorCacheMap.computeIfAbsent(rgb, key -> Color.rgb((key >> 16) & 0xFF, (key >> 8) & 0xFF, key & 0xFF));
+    }
+
+    /**
+     * Get a integer from a color object.
+     * @param color The color to turn into rgb.
+     * @return rgbInt
+     */
+    public static int toRGB(Color color) {
+        int result = (int) (color.getRed() * 0xFF);
+        result = (result << 8) + (int) (color.getGreen() * 0xFF);
+        result = (result << 8) + (int) (color.getBlue() * 0xFF);
+        return result;
     }
 }

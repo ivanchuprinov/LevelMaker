@@ -4,9 +4,9 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.util.concurrent.EventExecutorGroup;
 
 /**
@@ -17,9 +17,9 @@ public class NetworkUtil {
 
     public static void setup(ChannelPipeline pipeline, EventExecutorGroup eventGroup, SimpleChannelInboundHandler<?> handler) {
         pipeline.addLast("lengthDecoder", new LengthFieldBasedFrameDecoder(8192, 0, 4, 0, 4));
-        pipeline.addLast("stringDecoder", new StringDecoder(CharsetUtil.UTF_8));
+        pipeline.addLast("stringDecoder", new ObjectDecoder(ClassResolvers.cacheDisabled(null))); //TODO: Don't use a null cache.
         pipeline.addLast("lengthEncoder", new LengthFieldPrepender(4));
-        pipeline.addLast("stringEncoder", new StringEncoder(CharsetUtil.UTF_8));
+        pipeline.addLast("stringEncoder", new ObjectEncoder());
         pipeline.addLast(eventGroup, handler);
     }
 }

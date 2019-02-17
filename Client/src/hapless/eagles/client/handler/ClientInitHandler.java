@@ -1,7 +1,6 @@
 package hapless.eagles.client.handler;
 
 import hapless.eagles.client.ClientGameController;
-import hapless.eagles.common.packets.ClientboundPacket;
 import hapless.eagles.common.packets.NetworkUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultEventLoop;
@@ -20,7 +19,7 @@ public class ClientInitHandler extends SimpleChannelInboundHandler {
     public void channelActive(ChannelHandlerContext ctx) {
         System.out.println("Server Connection: Successful.");
         ctx.pipeline().remove(this);
-        NetworkUtil.setup(ctx.pipeline(), new DefaultEventLoop(), new ClientGameHandler());
+        NetworkUtil.setup(ctx.pipeline(), new DefaultEventLoop(), new ClientGameHandler(clientController));
     }
 
     @Override

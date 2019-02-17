@@ -2,6 +2,7 @@ package hapless.eagles.common;
 
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,13 +12,13 @@ import java.util.Queue;
  * Created by Kneesnap on 2/16/19.
  */
 @Getter
-public class WorldSector {
+public class WorldSector implements Serializable {
+    @Getter
+    private static World world; // TODO: This shouldn't be static.
     private int x;
     private int y;
     private ArrayList<Player> players = new ArrayList<>();
     private Queue<Player> playerQueue = new LinkedList<>();
-
-    @Getter private static World world; // TODO: This shouldn't be static.
 
     public WorldSector(World parentWorld, int x, int y) {
         world = parentWorld;
