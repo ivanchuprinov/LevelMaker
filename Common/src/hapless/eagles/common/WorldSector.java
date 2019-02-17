@@ -13,7 +13,8 @@ public class WorldSector {
     private int x;
     private int y;
     private static World world;
-    private int playerCount;
+    private ArrayList<Player> players;
+    private int playerCount = 0;
 
     public WorldSector(World parentWorld, int x, int y) {
         world = parentWorld;
@@ -24,15 +25,19 @@ public class WorldSector {
     /**
      * Add a player to the list.
      */
-    public void addPlayer(){
+    public void addPlayer(Player p){
+        players.add(p);
         ++playerCount;
     }
 
     /**
      * Remove a player from the list.
      */
-    public void removePlayer() {
-        --playerCount;
+    public void removePlayer(Player p) {
+        if(players.remove(p))
+            --playerCount;
+        else
+            System.out.println("Didn't find player to be removed. Fuck me I guess");
     }
 
     /**
