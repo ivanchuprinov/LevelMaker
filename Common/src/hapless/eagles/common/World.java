@@ -34,7 +34,7 @@ public class World {
         Utils.verify(ySize % this.ySectorSize == 0, "Cannot split %d pixels equally between %d sectors.", this.ySectorSize, this.ySectorSize);
 
         this.pixels = new WorldPixel[ySize][xSize];
-        this.sectors = new WorldSector[ySize / this.ySectorSize][xSectors / this.xSectorSize];
+        this.sectors = new WorldSector[ySize / this.ySectorSize][xSize / this.xSectorSize];
 
         // Create empty pixels.
         for (int y = 0; y < this.pixels.length; y++)

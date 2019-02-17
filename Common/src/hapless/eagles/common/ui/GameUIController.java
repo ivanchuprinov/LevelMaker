@@ -29,11 +29,6 @@ public class GameUIController implements Initializable {
         this.worldView = new WorldView(world);
         rootPane.getChildren().add(this.worldView);
         this.worldView.renderWorld();
-
-        rootPane.setOnKeyPressed(evt -> {
-            world.randomizeBoard();
-            this.worldView.renderWorld();
-        });
     }
 
     /**
