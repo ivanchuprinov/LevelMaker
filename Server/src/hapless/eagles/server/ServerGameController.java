@@ -5,9 +5,7 @@ import hapless.eagles.common.World;
 import hapless.eagles.common.WorldPixel;
 import hapless.eagles.common.WorldSector;
 import hapless.eagles.common.packets.ClientboundPacket;
-import hapless.eagles.common.packets.clientbound.PacketSetWallState;
-import hapless.eagles.common.packets.clientbound.PacketSnakePosition;
-import hapless.eagles.common.packets.clientbound.PacketStartGame;
+import hapless.eagles.common.packets.clientbound.*;
 import hapless.eagles.common.utils.Utils;
 import javafx.scene.paint.Color;
 
@@ -44,7 +42,7 @@ public class ServerGameController {
 
 
             // Start game if ready.
-            if (sector.getPlayerQueue().size() >= instance.getMinPlayers()) {
+            if (sector.getPlayers().isEmpty() && sector.getPlayerQueue().size() >= instance.getMinPlayers()) {
                 sector.getPlayers().addAll(sector.getPlayerQueue());
 
                 PacketStartGame psg = new PacketStartGame();
@@ -69,18 +67,23 @@ public class ServerGameController {
      * Kill a player, and remove their snake parts.
      */
     public void killPlayer(Player player) {
-        player.getSector().removePlayer(player);
+        WorldSector sector = player.getSector();
+        sector.removePlayer(player);
         player.setSector(null);
 
-        /*
         for (WorldPixel pixel : player.getTrail()) {
             pixel.setWallColorId(-1);
             instance.getClients().writeAndFlush(new PacketSetWallState(pixel));
         }
-        */
 
-        //TODO: Tell player they are dead.
+        sendPacket(player, new PacketGameOver());
 
-        //TODO: End game if complete, let winner select tile.
+        // Declare Winner!
+        if (sector.getPlayers().size() == 1) {
+            Player winner = sector.getPlayers().remove(0);
+            winner.setSector(null);
+            sendPacket(winner, new PacketWinGame(sector));
+        }
+
     }
 }

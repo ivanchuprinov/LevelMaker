@@ -17,4 +17,8 @@ public interface IClientPacketHandler {
     void handlePixelChange(ChannelHandlerContext context, PacketChangeMapPixel packet);
 
     void handleStartGame(ChannelHandlerContext context);
+
+    void handleGameOver(ChannelHandlerContext context);
+
+    void handleWin(ChannelHandlerContext context, PacketWinGame packet);
 }

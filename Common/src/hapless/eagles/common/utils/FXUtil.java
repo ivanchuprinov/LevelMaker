@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 public class FXUtil {
     public static final String CLIENT_INGAME_TEMPLATE = "client/game.fxml";
+    public static final String CLIENT_LOSE_TEMPLATE = "client/lose.fxml";
 
     /**
      * Gets the FXMLLoader by its name.
@@ -37,7 +38,7 @@ public class FXUtil {
         newStage.setTitle(title);
 
         if (parent != null) {
-            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.initModality(Modality.WINDOW_MODAL);
             newStage.setAlwaysOnTop(true);
             newStage.initOwner(parent);
         }

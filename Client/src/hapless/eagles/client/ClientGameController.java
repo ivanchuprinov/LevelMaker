@@ -53,7 +53,7 @@ public class ClientGameController {
      * Connects to the server.
      */
     public void connectToServer() {
-        final String SERVER_IP = "127.0.0.1"; //TODO: CONFIG
+        final String SERVER_IP = "127.0.0.1";
         final int PORT = 10000;
 
         EventLoopGroup group = new NioEventLoopGroup();

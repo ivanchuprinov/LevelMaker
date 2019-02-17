@@ -1,8 +1,10 @@
 package hapless.eagles.client.handler;
 
 import hapless.eagles.client.ClientGameController;
+import hapless.eagles.client.LoseController;
 import hapless.eagles.common.packets.clientbound.*;
 import hapless.eagles.common.packets.serverbound.PacketChooseSector;
+import hapless.eagles.common.utils.FXUtil;
 import io.netty.channel.ChannelHandlerContext;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
@@ -42,5 +44,17 @@ public class ClientPacketHandler implements IClientPacketHandler {
     @Override
     public void handleStartGame(ChannelHandlerContext context) {
         Platform.runLater(controller::makeGUI);
+    }
+
+    @Override
+    public void handleGameOver(ChannelHandlerContext context) {
+        Platform.runLater(() ->
+                FXUtil.makeFXMLTemplateWindow(null, FXUtil.CLIENT_LOSE_TEMPLATE, "Game Over", new LoseController()).showAndWait());
+        //TODO
+    }
+
+    @Override
+    public void handleWin(ChannelHandlerContext context, PacketWinGame packet) {
+        //TODO
     }
 }

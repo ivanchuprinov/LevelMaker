@@ -33,7 +33,6 @@ public class Player implements Serializable {
     public void setSector(WorldSector sector) {
         this.sector = sector;
 
-        //TODO: Better placement
         if (sector != null) {
             this.direction = Utils.randElement(MoveDirection.values());
 
