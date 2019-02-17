@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 //TODO: Once this is all done, we can clean it up.
 public class Controller {
-	private HashMap<Integer, Player> players = new HashMap<Integer, Player>();
+	private static HashMap<Integer, Player> players = new HashMap<Integer, Player>();
 	private ArrayList<WorldSector> sectors = new ArrayList<WorldSector>();
 	private int playerID = 0;
 	private World world;

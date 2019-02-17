@@ -1,12 +1,15 @@
 package hapless.eagles.common;
 
 import java.util.ArrayList;
+
+import hapless.eagles.server.Controller;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.input.*;
 import javafx.stage.*;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.shape.*;
 import javafx.scene.effect.*;
 import javafx.scene.paint.*;
@@ -31,8 +34,10 @@ public class Player {
     private WorldPixel head;
     // private ArrayList<WorldPixel> trail;
     private ObservableList trail;
+    private Canvas canvas;
     private Path path;
     private boolean alive = true;
+    private Controller controller;
 
 
     /* Constructors */
@@ -45,6 +50,8 @@ public class Player {
         trail = path.getElements();
         path.setStrokeWidth(10);
         path.setStrokeLineCap(StrokeLineCap.ROUND);
+        canvas = new WorldView(world);
+        controller = new Controller(world);
         initPlayer(playerNum);
 
         // fancy town
@@ -196,6 +203,12 @@ public class Player {
                 break;
         }
 
-        setHead(new WorldPixel(newX, newY));
+        if(canvas.getGraphicsContext2D().isPointInPath(newX, newY)) {
+            controller.killPlayer(this.playerID);
+        }
+        else {
+            trail.add(new LineTo(newX, newY));
+            setHead(new WorldPixel(newX, newY));
+        }
     }
 }
