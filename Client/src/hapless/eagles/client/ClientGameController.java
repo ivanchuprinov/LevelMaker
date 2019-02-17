@@ -5,7 +5,6 @@ import hapless.eagles.client.handler.ClientPacketHandler;
 import hapless.eagles.common.World;
 import hapless.eagles.common.WorldView;
 import hapless.eagles.common.packets.clientbound.IClientPacketHandler;
-import hapless.eagles.common.ui.GameUIController;
 import hapless.eagles.common.utils.FXUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -43,7 +42,7 @@ public class ClientGameController {
      * Creates the gui with a world.
      */
     public void makeGUI() {
-        GameUIController gameController = new GameUIController(getWorld());
+        GameUIController gameController = new GameUIController(this);
         AnchorPane root = FXUtil.loadFXMLTemplate(mainStage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
         this.worldView = (WorldView) root.getChildren().get(0); // messy, but w/e.
         gameController.postSetup(mainStage);

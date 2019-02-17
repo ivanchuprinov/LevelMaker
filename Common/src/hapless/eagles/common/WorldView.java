@@ -22,19 +22,10 @@ public class WorldView extends Canvas {
         updatePosition(world.getXSize() / 2D, world.getYSize() / 2D);
 
         setOnKeyPressed(evt -> {
-
             if (evt.getCode() == KeyCode.EQUALS) {
                 this.displayRadius--;
             } else if (evt.getCode() == KeyCode.MINUS) {
                 this.displayRadius++;
-            } else if (evt.getCode() == KeyCode.UP) {
-                this.centerWorldYTile -= .5;
-            } else if (evt.getCode() == KeyCode.DOWN) {
-                this.centerWorldYTile += .5;
-            } else if (evt.getCode() == KeyCode.LEFT) {
-                this.centerWorldXTile -= .5;
-            } else if (evt.getCode() == KeyCode.RIGHT) {
-                this.centerWorldXTile += .5;
             } else {
                 return;
             }

@@ -22,8 +22,8 @@ public class ServerPacketHandler implements IServerPacketHandler {
 
     @Override
     public void handleSetDirection(ChannelHandlerContext ctx, Player player, PacketSetDirection packet) {
-        //TODO: Prevent opposite direction.
-        player.setDirection(packet.getDirection());
+        if (packet.getDirection() != player.getDirection().getOpposite())
+            player.setDirection(packet.getDirection());
     }
 
     @Override
