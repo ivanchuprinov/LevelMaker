@@ -72,4 +72,8 @@ public class ServerInstance {
         System.out.println(getName() + " started on port " + getPort() + ".");
     }
 
+    public World getWorld() {
+        return this.world;
+    }
+
 }
