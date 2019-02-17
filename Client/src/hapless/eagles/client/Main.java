@@ -1,7 +1,7 @@
 package hapless.eagles.client;
 
 import hapless.eagles.common.World;
-import hapless.eagles.common.ui.GameController;
+import hapless.eagles.common.ui.GameUIController;
 import hapless.eagles.common.utils.Config;
 import hapless.eagles.common.utils.FXUtil;
 import javafx.application.Application;
@@ -26,7 +26,7 @@ public class Main extends Application {
         world.load(new Config(new File("debug.cfg")));
         System.out.println("Loaded World Config.");
 
-        GameController gameController = new GameController(world);
+        GameUIController gameController = new GameUIController(world);
         FXUtil.loadFXMLTemplate(stage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
         gameController.postSetup(stage);
         stage.show();
