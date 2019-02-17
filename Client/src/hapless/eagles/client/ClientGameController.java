@@ -1,25 +1,17 @@
 package hapless.eagles.client;
 
-import hapless.eagles.client.handler.ClientNetworkHandler;
+import hapless.eagles.client.handler.ClientInitHandler;
 import hapless.eagles.common.Player;
 import hapless.eagles.common.World;
-import hapless.eagles.common.WorldView;
 import hapless.eagles.common.packets.clientbound.IClientPacketHandler;
 import hapless.eagles.common.ui.GameUIController;
 import hapless.eagles.common.utils.Config;
 import hapless.eagles.common.utils.FXUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -70,18 +62,9 @@ public class ClientGameController {
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .handler(new ChannelInitializer() {
-                    @Override
-                    public void initChannel(Channel sh) throws Exception {
-                        System.out.println("Setting up...");
-                        sh.pipeline().addLast(new ObjectEncoder(),
-                                new ObjectDecoder(ClassResolvers.weakCachingResolver(getClass().getClassLoader())),
-                                new ClientNetworkHandler(ClientGameController.this));
-                    }
-                });
+                .handler(new ClientInitHandler(this));
 
         this.channel = clientBootstrap.connect(SERVER_IP, PORT).channel();
-
         this.channel.closeFuture().addListener(evt -> {
             System.out.println("Your connection was unexpectedly terminated.");
             group.shutdownGracefully();

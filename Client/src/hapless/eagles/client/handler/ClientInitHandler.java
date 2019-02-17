@@ -2,7 +2,9 @@ package hapless.eagles.client.handler;
 
 import hapless.eagles.client.ClientGameController;
 import hapless.eagles.common.packets.ClientboundPacket;
+import hapless.eagles.common.packets.NetworkUtil;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.AllArgsConstructor;
 
@@ -11,23 +13,19 @@ import lombok.AllArgsConstructor;
  * Created by Kneesnap on 2/16/2019.
  */
 @AllArgsConstructor
-public class ClientNetworkHandler extends SimpleChannelInboundHandler<ClientboundPacket> {
+public class ClientInitHandler extends SimpleChannelInboundHandler {
     private ClientGameController clientController;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         System.out.println("Server Connection: Successful.");
+        ctx.pipeline().remove(this);
+        NetworkUtil.setup(ctx.pipeline(), new DefaultEventLoop(), new ClientGameHandler());
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-        System.out.println("");
-    }
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ClientboundPacket packet) throws Exception {
-        System.out.println("Packet: " + packet);
-        packet.handleIncomingPacket(clientController.getPacketHandler(), channelHandlerContext);
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object o) throws Exception {
+        System.out.println("Received Packet?");
     }
 
     @Override
