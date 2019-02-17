@@ -32,6 +32,7 @@ public class Player {
     // private ArrayList<WorldPixel> trail;
     private ObservableList trail;
     private Path path;
+    private boolean alive = true;
 
 
     /* Constructors */
@@ -108,6 +109,10 @@ public class Player {
         return playerID;
     }
 
+    public boolean isAlive(){
+        return alive;
+    }
+
 
     /* Setters */
 
@@ -129,12 +134,14 @@ public class Player {
         this.head = newHead;
     }
 
-//    /* Add coordinates to trail */
+    public void setDead(){
+        alive = false;
+    }//    /* Add coordinates to trail */
 //    public void addToTrail(WorldPixel c) {
 //        trail.add(c);
 //    }
 //
-//    /* See if coordinates are in the trail */
+    //    /* See if coordinates are in the trail */
 //    public boolean isInTrail(WorldPixel c)
 //    {
 //        boolean retVal = false;
