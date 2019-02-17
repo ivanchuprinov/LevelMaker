@@ -78,5 +78,12 @@ public class ClientGameController {
     public void runGameLoop() {
         System.out.println("Game Loop has been called.");
         //TODO: Game loop.
+        WorldView view = new WorldView(world);
+        while(player.isAlive())
+        {
+            view.renderWorld();
+        }
     }
+
+
 }
