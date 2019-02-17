@@ -16,6 +16,7 @@ public class WorldSector {
     private int y;
     private ArrayList<Player> players = new ArrayList<>();
     private Queue<Player> playerQueue = new LinkedList<>();
+    public boolean gameReady = false;
 
     @Getter private static World world; // TODO: This shouldn't be static.
 
@@ -37,7 +38,7 @@ public class WorldSector {
      * Add a player to the list.
      */
     public void addPlayer(Player p) {
-        if(players.size() > 1)
+        if(!gameReady)
             playerQueue.add(p);
         else
             players.add(p);
@@ -71,6 +72,9 @@ public class WorldSector {
         {
             if(!playerQueue.isEmpty())
                 players.add(playerQueue.remove());
+        }
+        if(players.size() == 4) {
+            gameReady = true;
         }
     }
 
