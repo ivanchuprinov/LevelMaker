@@ -1,5 +1,6 @@
 package hapless.eagles.server.network;
 
+import hapless.eagles.common.packets.clientbound.PacketLoadWorld;
 import hapless.eagles.server.ServerInstance;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,6 +19,8 @@ public class ServerInitHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
         //TODO: Let the user pick the match to join. For now it's random.
+        System.out.println(ctx.channel().remoteAddress().toString() + " connected.");
+        ctx.writeAndFlush(new PacketLoadWorld(instance.getWorld()));
 
         /*
         final ByteBuf time = ctx.alloc().buffer(4);

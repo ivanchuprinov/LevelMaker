@@ -24,6 +24,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         gameController = new ClientGameController();
-        gameController.makeGUI(stage);
+        // gameController.makeGUI(stage);
+        gameController.connectToServer();
+        gameController.runGameLoop();
     }
 }
