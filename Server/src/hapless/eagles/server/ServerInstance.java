@@ -12,6 +12,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -57,6 +60,8 @@ public class ServerInstance {
                 .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childHandler(new ObjectEncoder())
+                .childHandler(new ObjectDecoder(ClassResolvers.weakCachingResolver(getClass().getClassLoader())))
                 .childHandler(new ServerInitHandler(this));
 
         bootstrap.bind(this.port).channel().closeFuture().addListener(evt -> {
