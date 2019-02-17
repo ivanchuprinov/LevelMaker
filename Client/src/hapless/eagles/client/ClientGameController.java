@@ -4,6 +4,7 @@ import hapless.eagles.client.handler.ClientInitHandler;
 import hapless.eagles.client.handler.ClientPacketHandler;
 import hapless.eagles.common.Player;
 import hapless.eagles.common.World;
+import hapless.eagles.common.WorldView;
 import hapless.eagles.common.packets.clientbound.IClientPacketHandler;
 import hapless.eagles.common.ui.GameUIController;
 import hapless.eagles.common.utils.FXUtil;
@@ -14,8 +15,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lombok.Getter;
 
 /**
@@ -27,8 +31,8 @@ import lombok.Getter;
 public class ClientGameController {
     private World world;
     private Player player;
-    private AnchorPane clientRootPane;
-    private IClientPacketHandler packetHandler; //TODO
+    private WorldView worldView;
+    private IClientPacketHandler packetHandler;
     private Channel channel;
     private Stage mainStage;
 
@@ -42,7 +46,8 @@ public class ClientGameController {
     public void makeGUI(World world) {
         this.world = world;
         GameUIController gameController = new GameUIController(world);
-        this.clientRootPane = FXUtil.loadFXMLTemplate(mainStage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
+        AnchorPane root = FXUtil.loadFXMLTemplate(mainStage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
+        this.worldView = (WorldView) root.getChildren().get(0); // messy, but w/e.
         gameController.postSetup(mainStage);
         mainStage.show();
     }
@@ -77,12 +82,9 @@ public class ClientGameController {
      */
     public void runGameLoop() {
         System.out.println("Game Loop has been called.");
-        //TODO: Game loop.
-        WorldView view = new WorldView(world);
-        while(player.isAlive())
-        {
-            view.renderWorld();
-        }
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), evt -> worldView.renderWorld()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
 
