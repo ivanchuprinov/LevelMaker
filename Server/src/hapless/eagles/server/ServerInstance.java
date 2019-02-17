@@ -17,6 +17,9 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.util.concurrent.DefaultEventExecutor;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import lombok.Getter;
 
 /**
@@ -27,9 +30,11 @@ import lombok.Getter;
 public class ServerInstance {
     private ChannelGroup clients;
     private IServerPacketHandler packetHandler;
+    private ServerGameController gameController;
     private World world;
     private String name;
     private int port;
+    private int minPlayers;
 
     public ServerInstance(Config config) {
         this.load(config);
@@ -42,10 +47,11 @@ public class ServerInstance {
     public void load(Config config) {
         this.name = config.getString("name");
         this.port = config.getInt("port");
+        this.minPlayers = config.getInt("requiredPlayers");
 
         // Load the world from the same config.
-        this.world = new World();
-        this.world.load(config);
+        this.world = new World(config);
+        this.gameController = new ServerGameController(this);
     }
 
     /**
@@ -73,8 +79,12 @@ public class ServerInstance {
         System.out.println(getName() + " started on port " + getPort() + ".");
     }
 
-    public World getWorld() {
-        return this.world;
+    /**
+     * Sets up the game loop.
+     */
+    public void startGameLoop() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), evt -> getGameController().runServerTick()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
-
 }

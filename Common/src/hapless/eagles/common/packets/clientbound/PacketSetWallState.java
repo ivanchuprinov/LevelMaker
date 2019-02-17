@@ -1,5 +1,6 @@
 package hapless.eagles.common.packets.clientbound;
 
+import hapless.eagles.common.WorldPixel;
 import hapless.eagles.common.packets.ClientboundPacket;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,11 @@ import lombok.NoArgsConstructor;
 public class PacketSetWallState extends ClientboundPacket {
     private int worldX;
     private int worldY;
-    private boolean isWallPresent;
+    private int colorId;
+
+    public PacketSetWallState(WorldPixel pixel) {
+        this(pixel.getX(), pixel.getY(), pixel.getWallColorId());
+    }
 
     @Override
     public void handleIncomingPacket(IClientPacketHandler handler, ChannelHandlerContext context) {

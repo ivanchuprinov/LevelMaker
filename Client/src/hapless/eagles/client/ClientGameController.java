@@ -87,5 +87,4 @@ public class ClientGameController {
         timeline.play();
     }
 
-
 }

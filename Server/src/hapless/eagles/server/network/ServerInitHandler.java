@@ -1,6 +1,8 @@
 package hapless.eagles.server.network;
 
+import hapless.eagles.common.Player;
 import hapless.eagles.common.packets.NetworkUtil;
+import hapless.eagles.common.packets.ServerboundPacket;
 import hapless.eagles.common.packets.clientbound.PacketLoadWorld;
 import hapless.eagles.server.ServerInstance;
 import io.netty.channel.ChannelHandler;
@@ -23,6 +25,7 @@ public class ServerInitHandler extends ChannelInboundHandlerAdapter {
         System.out.println(ctx.channel().remoteAddress().toString() + " connected.");
         ctx.pipeline().remove(this);
         instance.getClients().add(ctx.channel());
+        ctx.channel().attr(ServerboundPacket.PLAYER).set(new Player(instance.getWorld()));
         NetworkUtil.setup(ctx.pipeline(), new DefaultEventExecutorGroup(10), new ServerPacketHandlerAdapter(instance));
         ctx.channel().writeAndFlush(new PacketLoadWorld(instance.getWorld()));
     }

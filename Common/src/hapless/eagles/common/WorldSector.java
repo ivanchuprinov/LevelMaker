@@ -3,9 +3,9 @@ package hapless.eagles.common;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents a section of the world.
@@ -13,36 +13,16 @@ import java.util.Queue;
  */
 @Getter
 public class WorldSector implements Serializable {
-    @Getter
-    private static World world; // TODO: This shouldn't be static.
+    private World world;
     private int x;
     private int y;
-    private ArrayList<Player> players = new ArrayList<>();
+    private CopyOnWriteArrayList<Player> players = new CopyOnWriteArrayList<>();
     private Queue<Player> playerQueue = new LinkedList<>();
-    public boolean gameReady = false;
 
     public WorldSector(World parentWorld, int x, int y) {
-        world = parentWorld;
+        this.world = parentWorld;
         this.x = x;
         this.y = y;
-    }
-
-    /**
-     * Get the amount of players in this sector.
-     * @return playerCount
-     */
-    public int getPlayerCount() {
-        return players.size();
-    }
-
-    /**
-     * Add a player to the list.
-     */
-    public void addPlayer(Player p) {
-        if(!gameReady)
-            playerQueue.add(p);
-        else
-            players.add(p);
     }
 
     /**
@@ -51,32 +31,6 @@ public class WorldSector implements Serializable {
     public void removePlayer(Player p) {
         if (!players.remove(p))
             throw new RuntimeException("Didn't find player to be removed.");
-    }
-
-    /**
-     * Removes all players from the list.
-     */
-    public void removeAllPlayers()
-    {
-        while(players.size() != 0)
-        {
-            players.remove(0);
-        }
-    }
-
-    /**
-     * Loads the next batch of players from the queue.
-     */
-    public void loadQueuedPlayers()
-    {
-        for(int i = 0; i<4; i++)
-        {
-            if(!playerQueue.isEmpty())
-                players.add(playerQueue.remove());
-        }
-        if(players.size() == 4) {
-            gameReady = true;
-        }
     }
 
     /**
@@ -98,10 +52,26 @@ public class WorldSector implements Serializable {
     }
 
     /**
+     * Get the world x coordinate this sector ends at.
+     * @return xStart
+     */
+    public int getWorldXEnd() {
+        return getWorldXStart() + getWorld().getXSectorSize();
+    }
+
+    /**
      * Get the world y coordinate this sector starts at.
      * @return yStart
      */
     public int getWorldYStart() {
         return (world.getYSectorSize() * getY());
+    }
+
+    /**
+     * Get the world y coordinate this sector ends at.
+     * @return yEnd
+     */
+    public int getWorldYEnd() {
+        return getWorldYStart() + getWorld().getYSectorSize();
     }
 }

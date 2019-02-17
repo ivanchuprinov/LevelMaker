@@ -58,7 +58,7 @@ public class WorldView extends Canvas {
         for (int x = 0; x < world.getXSize(); x++) {
             for (int y = 0; y < world.getYSize(); y++) {
                 WorldPixel pixel = world.getPixel(x, y);
-                graphics.setFill(pixel.getColor());
+                graphics.setFill(pixel.hasWall() ? pixel.getWallColor() : pixel.getColor());
                 graphics.fillRect((x * pixelXWidth) - topLeftX, (y * pixelYWidth) - topLeftY, pixelXWidth, pixelYWidth);
             }
         }

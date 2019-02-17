@@ -13,16 +13,11 @@ import java.io.Serializable;
  */
 @Getter
 public class WorldPixel implements Serializable {
-    @Setter
-    private int colorId;
+    @Setter private int colorId;
+    @Setter private int wallColorId;
     private World world;
     private int x;
     private int y;
-
-    public WorldPixel(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 
     public WorldPixel(World world, int x, int y) {
         this.world = world;
@@ -36,5 +31,21 @@ public class WorldPixel implements Serializable {
      */
     public Color getColor() {
         return Utils.fromRGB(this.colorId);
+    }
+
+    /**
+     * Is there a wall currently on this pixel?
+     * @return hasWall
+     */
+    public boolean hasWall() {
+        return this.wallColorId > 0;
+    }
+
+    /**
+     * Gets the wall pixel color id.
+     * @return wallColor
+     */
+    public Color getWallColor() {
+        return Utils.fromRGB(this.wallColorId);
     }
 }

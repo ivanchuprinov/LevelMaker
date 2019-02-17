@@ -13,23 +13,22 @@ import java.io.IOException;
  */
 public class Main extends Application {
     private static ServerInstance serverInstance;
-    private Controller controller;
 
     public static void main(String[] args) {
         System.out.println("Server Hello.");
         launch(args);
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        loadServer();
-        controller = new Controller(serverInstance.getWorld());
-        //TODO: Launch GUI.
-    }
-
-    private void loadServer() throws IOException {
+    private static void loadServer() throws IOException {
         Config config = new Config(new File("servers.cfg"));
         serverInstance = new ServerInstance(config);
         serverInstance.startServer();
+        serverInstance.startGameLoop();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        loadServer();
+        //TODO: Launch GUI.
     }
 }

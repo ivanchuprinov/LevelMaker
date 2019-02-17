@@ -6,6 +6,9 @@ import javafx.scene.paint.Color;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents the entire world.
@@ -18,9 +21,10 @@ public class World implements Serializable {
     private int ySectorSize;
     private WorldPixel[][] pixels;
     private WorldSector[][] sectors;
+    private transient List<WorldSector> allSectors = new ArrayList<>();
 
-    public World() {
-        //load(config);
+    public World(Config config) {
+        load(config);
     }
 
     /**
@@ -123,5 +127,12 @@ public class World implements Serializable {
         for (WorldPixel[] array : pixels)
             for (WorldPixel pixel : array)
                 pixel.setColorId(Utils.toRGB(Utils.randElement(COLORS)));
+    }
+
+    public List<WorldSector> getAllSectors() {
+        if (this.allSectors.isEmpty())
+            for (WorldSector[] array : this.sectors)
+                this.allSectors.addAll(Arrays.asList(array));
+        return allSectors;
     }
 }
