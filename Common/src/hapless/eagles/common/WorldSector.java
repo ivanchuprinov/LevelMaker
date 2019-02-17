@@ -12,33 +12,47 @@ import java.util.ArrayList;
 public class WorldSector {
     private int x;
     private int y;
+
+    private int minX;
+    private int minY;
+    private int maxX;
+    private int maxY;
+
     private World world;
-    private ArrayList<Player> players;
+    private int playerCnt;
+
 
 
     public WorldSector(World parentWorld, int x, int y) {
         this.world = parentWorld;
         this.x = x;
         this.y = y;
-        players = new ArrayList<>();
+        playerCnt = 0;
     }
+
+    /**
+     * Get player count.
+     * @return number of players in the sector.
+     */
+    public int getPlayerCnt() {return playerCnt;}
 
     /**
      * Add a player to the list.
-     * @param p The player to be added.
      */
-    public void addPlayer(Player p){
-        players.add(p);
+    public void addPlayer(){
+        ++playerCnt;
     }
+
+
 
     /**
      * Remove a player from the list.
-     * @param p The player to be removed.
      */
-    public void removePlayer(Player p)
+    public void removePlayer()
     {
-        players.remove(p);
+        --playerCnt;
     }
+
 
 
     /**
