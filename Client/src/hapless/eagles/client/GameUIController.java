@@ -1,4 +1,4 @@
-package hapless.eagles.common.ui;
+package hapless.eagles.client;
 
 import hapless.eagles.common.MoveDirection;
 import hapless.eagles.common.World;
