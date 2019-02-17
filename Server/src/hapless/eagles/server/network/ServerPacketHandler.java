@@ -22,7 +22,7 @@ public class ServerPacketHandler implements IServerPacketHandler {
 
     @Override
     public void handleSetDirection(ChannelHandlerContext ctx, Player player, PacketSetDirection packet) {
-        if (packet.getDirection() != player.getDirection().getOpposite())
+        if (packet.getDirection().getOpposite() != player.getLastMoveDirection())
             player.setDirection(packet.getDirection());
     }
 

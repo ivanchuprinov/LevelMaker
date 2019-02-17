@@ -10,7 +10,6 @@ import lombok.Getter;
 
 /**
  * Handles clientbound packets.
- * TODO: Handle packets!
  * Created by Kneesnap on 2/16/2019.
  */
 @Getter

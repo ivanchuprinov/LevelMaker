@@ -25,8 +25,6 @@ public class ServerGameController {
      * Called at an interval, a server tick runs all server update logic.
      */
     public void runServerTick() {
-        //TODO: Process packets?
-
         World world = instance.getWorld();
         for (WorldSector sector : world.getAllSectors()) {
             for (Player player : sector.getPlayers()) {

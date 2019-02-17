@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * Set the direction the player is moving.
- * TODO: Call this
  * Created by Kneesnap on 2/16/2019.
  */
 @Getter

@@ -20,6 +20,7 @@ public class Player implements Serializable {
     @Setter private MoveDirection direction;
     private LinkedList<WorldPixel> trail = new LinkedList<>();
     @Setter private transient Channel channel; // Server-Only.
+    @Setter private transient MoveDirection lastMoveDirection;
 
     public Player(World world) {
         this.world = world;
@@ -35,7 +36,23 @@ public class Player implements Serializable {
         //TODO: Better placement
         if (sector != null) {
             this.direction = Utils.randElement(MoveDirection.values());
-            trail.add(sector.getPixel(Utils.randInt(0, getWorld().getXSectorSize() - 1), Utils.randInt(0, getWorld().getYSectorSize() - 1)));
+
+            int xMax = getWorld().getXSectorSize() - 1;
+            int yMax = getWorld().getYSectorSize() - 1;
+            int xPos = Utils.randInt(0, xMax);
+            int yPos = Utils.randInt(0, yMax);
+            double xPercent = (double) xPos / (double) xMax;
+            double yPercent = (double) yPos / (double) yMax;
+            if (yPercent < .25)
+                this.direction = MoveDirection.DOWN;
+            if (xPercent < .25)
+                this.direction = MoveDirection.RIGHT;
+            if (xPercent > .75)
+                this.direction = MoveDirection.LEFT;
+            if (yPercent > .75)
+                this.direction = MoveDirection.UP;
+
+            trail.add(sector.getPixel(xPos, yPos));
         }
     }
 
@@ -43,6 +60,8 @@ public class Player implements Serializable {
      * Move this player's snake.
      */
     public WorldPixel move() {
+        this.lastMoveDirection = getDirection();
+
         WorldPixel head = getTrail().peekLast();
         int oldX = head.getX();
         int oldY = head.getY();
