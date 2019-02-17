@@ -13,22 +13,26 @@ public class WorldSector {
     private int x;
     private int y;
     private World world;
-    private ArrayList<Player> players;
+    private int numPlayers;
 
 
     public WorldSector(World parentWorld, int x, int y) {
         this.world = parentWorld;
         this.x = x;
         this.y = y;
-        players = new ArrayList<>();
+        numPlayers = 0;
     }
 
     /**
      * Add a player to the list.
      * @param p The player to be added.
      */
-    public void addPlayer(Player p){
-        players.add(p);
+    public void addPlayer(){
+        ++numPlayers;
+    }
+
+    public void setCoord() {
+
     }
 
     /**
@@ -37,7 +41,7 @@ public class WorldSector {
      */
     public void removePlayer(Player p)
     {
-        players.remove(p);
+        --numPlayers;
     }
 
 
