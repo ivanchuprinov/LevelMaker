@@ -14,6 +14,7 @@ import java.io.File;
  * Created by Kneesnap on 2/16/19.
  */
 public class Main extends Application {
+    private static ClientGameController gameController;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Client Start");
@@ -22,13 +23,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        World world = new World();
-        world.load(new Config(new File("debug.cfg")));
-        System.out.println("Loaded World Config.");
-
-        GameUIController gameController = new GameUIController(world);
-        FXUtil.loadFXMLTemplate(stage, FXUtil.CLIENT_INGAME_TEMPLATE, gameController);
-        gameController.postSetup(stage);
-        stage.show();
+        gameController = new ClientGameController();
+        gameController.makeGUI(stage);
     }
 }
